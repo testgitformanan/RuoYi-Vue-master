@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 浮标实体
  */
-public class SysBuoy {
+public class SysBuoyDto {
     private Integer id;
     private List<Map> jobStatus;
     // 工作状态-通信频率

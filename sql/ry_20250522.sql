@@ -702,3 +702,79 @@ create table gen_table_column (
   update_time       datetime                                   comment '更新时间',
   primary key (column_id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
+
+
+-- ----------------------------
+-- 20、浮标业务表
+-- ----------------------------
+drop table if exists sys_buoy;
+create table sys_buoy (
+id         bigint(20)      not null auto_increment    comment '编号',
+job_status        varchar(500)                               comment '工作状态',
+communication_frequency_job_status       varchar(200)                               comment '工作状态-通信频率',
+modulation_type_job_status    varchar(100)                               comment '工作状态-调制方式',
+communication_system_job_status       varchar(100)                               comment '工作状态-通信体制',
+communication_frequency_job_param       varchar(100)                               comment '工作参数-通信频率',
+modulation_type_job_param    varchar(100)                               comment '工作参数-调制方式',
+gain_job_param       varchar(100)                               comment '工作参数-通信体制',
+send_control       varchar(1000)                               comment '发送指令',
+receiver_control       varchar(1000)                               comment '接收指令',
+job_status_file_name        varchar(500)                               comment '工作状态-文件名称',
+job_param_send_control_file_name        varchar(500)                               comment '工作参数-发送指令-文件名称',
+job_param_receiver_control_file_name        varchar(500)                               comment '工作参数-接收指令-文件名称',
+create_time       datetime                              comment '创建时间',
+primary key (id)
+) engine=innodb auto_increment=1 comment = '浮标表';
+
+
+-- ----------------------------
+-- 21、浮标无线电感知业务表
+-- ----------------------------
+drop table if exists sys_buoy_radio_sensing;
+create table sys_buoy_radio_sensing (
+id         bigint(20)      not null auto_increment    comment '编号',
+job_status        varchar(500)                               comment '工作状态',
+communication_frequency       varchar(200)                               comment '通信频率',
+modulation_type    varchar(100)                               comment '调制方式',
+communication_system       varchar(100)                               comment '通信体制',
+azimuth_angle       varchar(1000)                               comment '方位角',
+pitch_angle       varchar(1000)                               comment '俯仰角',
+create_time       datetime                              comment '创建时间',
+primary key (id)
+) engine=innodb auto_increment=1 comment = '浮标无线电感知业务表';
+
+-- ----------------------------
+-- 22、浮标水声通信机业务表
+-- ----------------------------
+drop table if exists sys_buoy_machine;
+create table sys_buoy_machine (
+id         bigint(20)      not null auto_increment    comment '编号',
+port      varchar(100)                               comment '端口',
+baud_rate      varchar(100)                               comment '波特率',
+send_gain_job_status       varchar(200)                               comment '工作状态-发送增益',
+modulation_type_job_status    varchar(100)                               comment '工作状态-调制方式',
+receiver_gain_job_status       varchar(100)                               comment '工作状态-接收增益',
+send_gain_job_param       varchar(100)                               comment '工作参数-发送增益',
+modulation_type_job_param    varchar(100)                               comment '工作参数-调制方式',
+receiver_gain_job_param       varchar(100)                               comment '工作参数-接收增益',
+send_control       varchar(1000)                               comment '发送指令',
+receiver_control       varchar(1000)                               comment '接收指令',
+job_status_file_name        varchar(500)                               comment '工作状态-文件名称',
+job_param_send_control_file_name        varchar(500)                               comment '工作参数-发送指令-文件名称',
+job_param_receiver_control_file_name        varchar(500)                               comment '工作参数-接收指令-文件名称',
+create_time       datetime                              comment '创建时间',
+primary key (id)
+) engine=innodb auto_increment=1 comment = '浮标水声通信机业务表';
+
+
+-- ----------------------------
+-- 23、浮标信号数据业务表
+-- ----------------------------
+drop table if exists sys_buoy_information;
+create table sys_buoy_information (
+                                        id         bigint(20)      not null auto_increment    comment '编号',
+                                        content        blob                               comment '信号内容',
+                                        information_file_name       varchar(200)                               comment '信号数据文件路径',
+                                        create_time       datetime                              comment '创建时间',
+                                        primary key (id)
+) engine=innodb auto_increment=1 comment = '浮标无线电感知业务表';

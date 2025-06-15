@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysBuoyMachineMapper">
+    
+    <resultMap type="SysBuoyMachine" id="SysBuoyMachineResult">
+        <result property="id"    column="id"    />
+        <result property="port"    column="port"    />
+        <result property="baudRate"    column="baud_rate"    />
+        <result property="sendGainJobStatus"    column="send_gain_job_status"    />
+        <result property="modulationTypeJobStatus"    column="modulation_type_job_status"    />
+        <result property="receiverGainJobStatus"    column="receiver_gain_job_status"    />
+        <result property="sendGainJobParam"    column="send_gain_job_param"    />
+        <result property="modulationTypeJobParam"    column="modulation_type_job_param"    />
+        <result property="receiverGainJobParam"    column="receiver_gain_job_param"    />
+        <result property="sendControl"    column="send_control"    />
+        <result property="receiverControl"    column="receiver_control"    />
+        <result property="jobStatusFileName"    column="job_status_file_name"    />
+        <result property="jobParamSendControlFileName"    column="job_param_send_control_file_name"    />
+        <result property="jobParamReceiverControlFileName"    column="job_param_receiver_control_file_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSysBuoyMachineVo">
+        select id, port, baud_rate, send_gain_job_status, modulation_type_job_status, receiver_gain_job_status, send_gain_job_param, modulation_type_job_param, receiver_gain_job_param, send_control, receiver_control, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, create_time from sys_buoy_machine
+    </sql>
+
+    <select id="selectSysBuoyMachineList" parameterType="SysBuoyMachine" resultMap="SysBuoyMachineResult">
+        <include refid="selectSysBuoyMachineVo"/>
+        <where>  
+            <if test="port != null  and port != ''"> and port = #{port}</if>
+            <if test="baudRate != null  and baudRate != ''"> and baud_rate = #{baudRate}</if>
+            <if test="sendGainJobStatus != null  and sendGainJobStatus != ''"> and send_gain_job_status = #{sendGainJobStatus}</if>
+            <if test="modulationTypeJobStatus != null  and modulationTypeJobStatus != ''"> and modulation_type_job_status = #{modulationTypeJobStatus}</if>
+            <if test="receiverGainJobStatus != null  and receiverGainJobStatus != ''"> and receiver_gain_job_status = #{receiverGainJobStatus}</if>
+            <if test="sendGainJobParam != null  and sendGainJobParam != ''"> and send_gain_job_param = #{sendGainJobParam}</if>
+            <if test="modulationTypeJobParam != null  and modulationTypeJobParam != ''"> and modulation_type_job_param = #{modulationTypeJobParam}</if>
+            <if test="receiverGainJobParam != null  and receiverGainJobParam != ''"> and receiver_gain_job_param = #{receiverGainJobParam}</if>
+            <if test="sendControl != null  and sendControl != ''"> and send_control = #{sendControl}</if>
+            <if test="receiverControl != null  and receiverControl != ''"> and receiver_control = #{receiverControl}</if>
+            <if test="jobStatusFileName != null  and jobStatusFileName != ''"> and job_status_file_name like concat('%', #{jobStatusFileName}, '%')</if>
+            <if test="jobParamSendControlFileName != null  and jobParamSendControlFileName != ''"> and job_param_send_control_file_name like concat('%', #{jobParamSendControlFileName}, '%')</if>
+            <if test="jobParamReceiverControlFileName != null  and jobParamReceiverControlFileName != ''"> and job_param_receiver_control_file_name like concat('%', #{jobParamReceiverControlFileName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysBuoyMachineById" parameterType="Long" resultMap="SysBuoyMachineResult">
+        <include refid="selectSysBuoyMachineVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysBuoyMachine" parameterType="SysBuoyMachine" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_buoy_machine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="port != null">port,</if>
+            <if test="baudRate != null">baud_rate,</if>
+            <if test="sendGainJobStatus != null">send_gain_job_status,</if>
+            <if test="modulationTypeJobStatus != null">modulation_type_job_status,</if>
+            <if test="receiverGainJobStatus != null">receiver_gain_job_status,</if>
+            <if test="sendGainJobParam != null">send_gain_job_param,</if>
+            <if test="modulationTypeJobParam != null">modulation_type_job_param,</if>
+            <if test="receiverGainJobParam != null">receiver_gain_job_param,</if>
+            <if test="sendControl != null">send_control,</if>
+            <if test="receiverControl != null">receiver_control,</if>
+            <if test="jobStatusFileName != null">job_status_file_name,</if>
+            <if test="jobParamSendControlFileName != null">job_param_send_control_file_name,</if>
+            <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="port != null">#{port},</if>
+            <if test="baudRate != null">#{baudRate},</if>
+            <if test="sendGainJobStatus != null">#{sendGainJobStatus},</if>
+            <if test="modulationTypeJobStatus != null">#{modulationTypeJobStatus},</if>
+            <if test="receiverGainJobStatus != null">#{receiverGainJobStatus},</if>
+            <if test="sendGainJobParam != null">#{sendGainJobParam},</if>
+            <if test="modulationTypeJobParam != null">#{modulationTypeJobParam},</if>
+            <if test="receiverGainJobParam != null">#{receiverGainJobParam},</if>
+            <if test="sendControl != null">#{sendControl},</if>
+            <if test="receiverControl != null">#{receiverControl},</if>
+            <if test="jobStatusFileName != null">#{jobStatusFileName},</if>
+            <if test="jobParamSendControlFileName != null">#{jobParamSendControlFileName},</if>
+            <if test="jobParamReceiverControlFileName != null">#{jobParamReceiverControlFileName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysBuoyMachine" parameterType="SysBuoyMachine">
+        update sys_buoy_machine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="port != null">port = #{port},</if>
+            <if test="baudRate != null">baud_rate = #{baudRate},</if>
+            <if test="sendGainJobStatus != null">send_gain_job_status = #{sendGainJobStatus},</if>
+            <if test="modulationTypeJobStatus != null">modulation_type_job_status = #{modulationTypeJobStatus},</if>
+            <if test="receiverGainJobStatus != null">receiver_gain_job_status = #{receiverGainJobStatus},</if>
+            <if test="sendGainJobParam != null">send_gain_job_param = #{sendGainJobParam},</if>
+            <if test="modulationTypeJobParam != null">modulation_type_job_param = #{modulationTypeJobParam},</if>
+            <if test="receiverGainJobParam != null">receiver_gain_job_param = #{receiverGainJobParam},</if>
+            <if test="sendControl != null">send_control = #{sendControl},</if>
+            <if test="receiverControl != null">receiver_control = #{receiverControl},</if>
+            <if test="jobStatusFileName != null">job_status_file_name = #{jobStatusFileName},</if>
+            <if test="jobParamSendControlFileName != null">job_param_send_control_file_name = #{jobParamSendControlFileName},</if>
+            <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name = #{jobParamReceiverControlFileName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysBuoyMachineById" parameterType="Long">
+        delete from sys_buoy_machine where id = #{id}
+    </delete>
+
+    <delete id="deleteSysBuoyMachineByIds" parameterType="String">
+        delete from sys_buoy_machine where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
