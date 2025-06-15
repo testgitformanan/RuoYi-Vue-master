@@ -76,7 +76,7 @@ public interface ISysBuoyService
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<SysBuoy> getBuoyInfo(SysCommunication communication, Long userId);
+    public SysBuoy getBuoyInfo(SysCommunication communication, Long userId);
 
 
     /**
@@ -130,4 +130,13 @@ public interface ISysBuoyService
      * @return
      */
     String analyzeBuoyMachineJobParam(MultipartFile file, Long userId);
+
+    /**
+     * 水声通信机导入信号数据文件 并发送远程控制指令请求
+     *
+     * @param file 浮标信息
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    String uploadBuoyInformation(MultipartFile file, Long userId);
 }

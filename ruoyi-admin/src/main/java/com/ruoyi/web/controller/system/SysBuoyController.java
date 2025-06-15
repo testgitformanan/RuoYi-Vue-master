@@ -14,6 +14,8 @@ import com.ruoyi.system.domain.SysBuoyRadioSensing;
 import com.ruoyi.system.service.ISysBuoyInformationService;
 import com.ruoyi.system.service.ISysBuoyRadioSensingService;
 import com.ruoyi.system.service.ISysBuoyService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +34,7 @@ import java.util.*;
  * 
  * @author ruoyi
  */
+@Api("浮标管理")
 @RestController
 @RequestMapping("/system/buoy")
 public class SysBuoyController extends BaseController
@@ -49,16 +52,18 @@ public class SysBuoyController extends BaseController
     /**
      * 浮标信息获取
      */
+    @ApiOperation("获取浮标详情")
     @GetMapping("/getBuoyInfo")
     public AjaxResult getBuoyInfo(SysCommunication communication)
     {
-        List<SysBuoy> menus = buoyService.getBuoyInfo(null, getUserId());
+        SysBuoy menus = buoyService.getBuoyInfo(null, getUserId());
         return success(menus);
     }
 
     /**
      * 浮标启动/关闭连接
      */
+    @ApiOperation("浮标启动/关闭连接")
     @RequestMapping("/connect")
     public AjaxResult connectBuoy(@RequestBody String param)
     {
@@ -69,6 +74,7 @@ public class SysBuoyController extends BaseController
     /**
      * 浮标工作参数配置
      */
+    @ApiOperation("浮标工作参数配置")
     @PostMapping("/set/buoyJobParam")
     public AjaxResult setBuoyJobParam(@RequestBody String communication)
     {
@@ -79,6 +85,7 @@ public class SysBuoyController extends BaseController
     /**
      * 水声通信机启动/关闭连接
      */
+    @ApiOperation("水声通信机启动/关闭连接")
     @RequestMapping("/connect/machine")
     public AjaxResult connectBuoyMachine(@RequestBody String param)
     {
@@ -88,6 +95,7 @@ public class SysBuoyController extends BaseController
     /**
      * 水声通信机工作参数配置
      */
+    @ApiOperation("水声通信机工作参数配置")
     @PostMapping("/set/machineJobParam")
     public AjaxResult setMachineJobParam(@RequestBody String communication)
     {
@@ -99,7 +107,7 @@ public class SysBuoyController extends BaseController
     /**
      * 水声通信机导入工作参数文件  远程控制指令发送并发送远程控制指令
      */
-
+    @ApiOperation("水声通信机导入工作参数文件")
     @PostMapping("/upload/machine/jobParam/send")
     public AjaxResult sendMachineJobParam(@RequestParam("file") MultipartFile file) {
         try {
@@ -139,7 +147,7 @@ public class SysBuoyController extends BaseController
     /**
      * 水声通信机器导入工作状态文件
      */
-
+    @ApiOperation("水声通信机器导入工作状态文件")
     @PostMapping("/upload/machine/jobStatus/send")
     public AjaxResult sendMachineJobStatus(@RequestParam("file") MultipartFile file) {
         try {
@@ -260,6 +268,7 @@ public class SysBuoyController extends BaseController
     /**
      * 浮标信号数据显示  web-java端
      */
+    @ApiOperation("浮标信号数据显示")
     @RequestMapping("/connect/buoy/information/get/web")
     public AjaxResult getBuoyInformationForWeb(@RequestBody String test)
     {
@@ -294,7 +303,7 @@ public class SysBuoyController extends BaseController
     /**
      * 浮标导入工作状态文件  wen-java
      */
-
+    @ApiOperation("浮标导入工作状态文件")
     @PostMapping("/upload/buoy/jobStatus/send")
     public AjaxResult sendBuoyJobStatus(@RequestParam("file") MultipartFile file) {
         SysBuoyDto sysBuoyDto = buoyService.sendBuoyJobStatus(file, 1L);
@@ -304,6 +313,7 @@ public class SysBuoyController extends BaseController
     /**
      * 浮标导入工作参数远程控制指令发送文件 并发送远程控制指令请求    wen-java  java-c
      */
+    @ApiOperation("浮标导入工作参数远程控制指令发送文件")
     @PostMapping("/upload/buoy/jobParam/send")
     public AjaxResult sendBuoyJobParamSend(@RequestParam("file") MultipartFile file) {
 
@@ -315,8 +325,20 @@ public class SysBuoyController extends BaseController
     }
 
     /**
+     * 浮标导入信号数据文件 并发送到c端  web-java端
+     */
+    @ApiOperation("浮标导入信号数据文件")
+    @RequestMapping("/upload/buoy/information/get/web")
+    public AjaxResult uploadBuoyInformationForWeb(@RequestParam("file") MultipartFile file)
+    {
+        String s = buoyService.uploadBuoyInformation(file, 1L);
+        return success(s);
+    }
+
+    /**
      * 浮标导入工作参数远程控制指令接收文件    wen-java
      */
+    @ApiOperation("浮标导入工作参数远程控制指令接收文件")
     @PostMapping("/upload/buoy/jobParam/get")
     public AjaxResult sendBuoyJobParam(@RequestParam("file") MultipartFile file) {
 
@@ -331,7 +353,8 @@ public class SysBuoyController extends BaseController
     /**
      * 浮标无线电感知教学 内容获取
      */
-    @GetMapping("/getBuoyRadioSensing")
+    @ApiOperation("浮标无线电感知教学 内容获取")
+    @GetMapping("/get/buoy/radioSensing")
     public AjaxResult getBuoyRadioSensing(SysCommunication communication)
     {
         SysBuoyRadioSensing buoyRadioSensing = new SysBuoyRadioSensing();

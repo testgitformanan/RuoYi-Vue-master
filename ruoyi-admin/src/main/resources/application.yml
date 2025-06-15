@@ -127,3 +127,25 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+# 远程请求路径配置
+remoting:
+  # c端路径
+  cPath:
+    # 无线感知 工作参数配置 配置工作参数，工作参数组成远程控制指令发送
+    wxgz:
+    #浮标 工作参数配置
+    fbgzcspz:
+      #浮标 工作参数配置 与浮标模块启动连接、停止连接
+      ljqt: http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt
+      #浮标 工作参数配置 配置工作参数，工作参数组成远程控制指令发送
+      yckzzl: http://1095rm2tl0368.vicp.fun/fb/gzcspz/yckzzl
+      # 水声通信机
+    machine:
+      # 水声通信机 通信连接 设置参数，通过串口与水声通信机通信
+      txlj: http://1095rm2tl0368.vicp.fun/sstxj/txlj/ljqt
+      # 水声通信机 ⼯作参数配置 配置工作参数，工作参数组成远程控制指令发送
+      gzcspz: http://1095rm2tl0368.vicp.fun/sstxj/gzcspz/yckzzl
+      # 水声通信机 信号音频文件发送 本地信号音频文件通过水声通信机发送
+      xhypwj: http://1095rm2tl0368.vicp.fun/sstxj/xhypwj/xhypwjfs
+  # 请求前缀
+  pathMapping: /dev-api

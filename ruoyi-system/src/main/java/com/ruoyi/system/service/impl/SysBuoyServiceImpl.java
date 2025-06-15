@@ -10,6 +10,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.system.domain.SysBuoy;
+import com.ruoyi.system.domain.SysBuoyInformation;
 import com.ruoyi.system.domain.SysBuoyMachine;
 import com.ruoyi.system.domain.vo.MetaVo;
 import com.ruoyi.system.domain.vo.RouterVo;
@@ -17,6 +18,7 @@ import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysBuoyService;
 import com.ruoyi.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,21 +43,22 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
     private final String UPLOAD_DIR = "uploads/";
 
-
-    @Autowired
-    private SysMenuMapper menuMapper;
-
-    @Autowired
-    private SysRoleMapper roleMapper;
-
-    @Autowired
-    private SysRoleMenuMapper roleMenuMapper;
-
     @Autowired
     private SysBuoyMachineMapper sysBuoyMachineMapper;
 
+    @Autowired
     private SysBuoyMapper sysBuoyMapper;
 
+    @Value("${remoting.cPath.fbgzcspz.ljqt}")
+    private String fbtxljPath;
+    @Value("${remoting.cPath.fbgzcspz.yckzzl}")
+    private String fbyckzzlPath;
+    @Value("${remoting.cPath.machine.txlj}")
+    private String machinetxljPath;
+    @Value("${remoting.cPath.machine.gzcspz}")
+    private String machinegzcspzPath;
+    @Value("${remoting.cPath.machine.xhypwj}")
+    private String machinexhypwjPath;
     /**
      * 浮标启动/关闭连接
      * 
@@ -76,7 +79,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
 //        System.out.println(communication);
 
         // 启动与关闭连接
-        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt";
+        String apiUrl = fbtxljPath;
+//        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer your_access_token");
@@ -120,7 +124,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
 //        System.out.println(communication);
 
         // 启动与关闭连接
-        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt";
+        String apiUrl = machinetxljPath;
+//        String apiUrl = "http://1095rm2tl0368.vicp.fun/sstxj/txlj/ljqt";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer your_access_token");
@@ -154,7 +159,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     public String setBuoyJobParam(String param, Long userId)
     {
         // 配置工作参数
-        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/yckzzl";
+        String apiUrl = fbyckzzlPath;
+//        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/yckzzl";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer your_access_token");
@@ -178,7 +184,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     public String setMachineJobParam(String communication, Long userId)
     {
         // 配置工作参数
-        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/yckzzl";
+        String apiUrl = machinegzcspzPath;
+//        String apiUrl = "http://1095rm2tl0368.vicp.fun/sstxj/gzcspz/yckzzl";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Authorization", "Bearer your_access_token");
@@ -194,20 +201,47 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     }
 
     /**
+     * 发送信号数据给c端
+     *
+     * @param param 浮标信息
+     * @return 菜单列表
+     */
+    public String sendBuoyInformation(String param, Long userId)
+    {
+        // 启动与关闭连接
+        String apiUrl = machinexhypwjPath;
+//        String apiUrl = "http://1095rm2tl0368.vicp.fun/sstxj/xhypwj/xhypwjfs";
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer your_access_token");
+        String postResponse = "";
+        try {
+            postResponse = sendPostRequest(apiUrl, headers, param);
+            System.out.println("POST Response: " + postResponse);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("我来了connect");
+        return postResponse;
+    }
+
+    /**
      * 查询浮标详细信息
      *
      * @param communication 菜单信息
      * @return 菜单列表
      */
     @Override
-    public List<SysBuoy> getBuoyInfo(SysCommunication communication, Long userId)
+    public SysBuoy getBuoyInfo(SysCommunication communication, Long userId)
     {
         SysBuoy buoy = new SysBuoy();
         buoy.setId(userId);
         SysBuoyMachine buoyMachine = new SysBuoyMachine();
         List<SysBuoyMachine> sysBuoyMachines = sysBuoyMachineMapper.selectSysBuoyMachineList(buoyMachine);
-        buoy.setSysBuoyMachines(sysBuoyMachines);
-        return sysBuoyMapper.selectSysBuoyList(buoy);
+        SysBuoy sysBuoy = sysBuoyMapper.selectSysBuoyById(buoy.getId());
+        sysBuoy.setSysBuoyMachines(sysBuoyMachines);
+        return sysBuoy;
     }
 
     /**
@@ -279,6 +313,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             throw new RuntimeException(e);
         }
         String jsonString = JSON.toJSONString(sysBuoyDto);
+        saveBuoyInfo(jsonString, userId);
         return jsonString;
     }
 
@@ -317,6 +352,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysBuoyDto);
+            saveBuoyInfo(jsonString, userId);
             return setBuoyJobParam(jsonString, userId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -359,6 +395,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
                 // 解析每一行文本的逻辑
             }
             scanner.close();
+            String jsonString = JSON.toJSONString(sysBuoyDto);
+            saveBuoyInfo(jsonString, userId);
             return sysBuoyDto;
         } catch (Exception e) {
             e.printStackTrace();
@@ -446,7 +484,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
 
 
     /**
-     * 浮标导入工作参数文件 并发送远程控制指令请求
+     * 水声通信机导入工作参数文件 并发送远程控制指令请求
      *
      * @param file 浮标信息
      * @param userId 用户ID
@@ -479,6 +517,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysBuoyMachine);
+            saveBuoyMachineInfo(jsonString, userId);
             return setMachineJobParam(jsonString, userId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -521,6 +560,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
                 // 解析每一行文本的逻辑
             }
             scanner.close();
+            String jsonString = JSON.toJSONString(sysBuoyDto);
+            saveBuoyInfo(jsonString, userId);
             return sysBuoyDto;
         } catch (Exception e) {
             e.printStackTrace();
@@ -565,6 +606,44 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             throw new RuntimeException(e);
         }
         String jsonString = JSON.toJSONString(sysBuoyMachine);
+        sysBuoyMachineMapper.insertSysBuoyMachine(sysBuoyMachine);
         return jsonString;
     }
+
+    /**
+     * 浮标导入信号数据文件 并发送远程请求
+     *
+     * @param file 浮标信息
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    public String uploadBuoyInformation(MultipartFile file, Long userId){
+        try {
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            File file1 = File.createTempFile("temp", null);
+            file.transferTo(file1);
+            Scanner scanner = new Scanner(file1);
+            SysBuoyInformation sysBuoyInformation = new SysBuoyInformation();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] split = line.split(";");
+                for (String s : split) {
+                    String[] splitStatus = s.split("&");
+                    String split0= splitStatus[0];
+                    sysBuoyInformation.setContent(split0);
+                }
+                // 解析每一行文本的逻辑
+            }
+            scanner.close();
+            String jsonString = JSON.toJSONString(sysBuoyInformation);
+            return sendBuoyInformation(jsonString, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
