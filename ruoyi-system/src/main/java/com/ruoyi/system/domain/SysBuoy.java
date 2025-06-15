@@ -71,6 +71,10 @@ public class SysBuoy extends BaseEntity
     @Excel(name = "工作参数-接收指令-文件名称")
     private String jobParamReceiverControlFileName;
 
+    /** 浮标启动关闭连接状态 1启动0关闭 */
+    @Excel(name = "浮标启动关闭连接状态 1启动0关闭")
+    private String builStartStopFrame;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -207,6 +211,14 @@ public class SysBuoy extends BaseEntity
 
     public void setSysBuoyMachines(List<SysBuoyMachine> sysBuoyMachines) {
         this.sysBuoyMachines = sysBuoyMachines;
+    }
+
+    public String getBuilStartStopFrame() {
+        return builStartStopFrame;
+    }
+
+    public void setBuilStartStopFrame(String builStartStopFrame) {
+        this.builStartStopFrame = builStartStopFrame;
     }
 
     @Override
