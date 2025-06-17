@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="SysBuoy" id="SysBuoyResult">
         <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
         <result property="jobStatus"    column="job_status"    />
         <result property="communicationFrequencyJobStatus"    column="communication_frequency_job_status"    />
         <result property="modulationTypeJobStatus"    column="modulation_type_job_status"    />
@@ -15,15 +16,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="gainJobParam"    column="gain_job_param"    />
         <result property="sendControl"    column="send_control"    />
         <result property="receiverControl"    column="receiver_control"    />
+        <result property="jobStatusFileName"    column="job_status_file_name"    />
+        <result property="jobParamSendControlFileName"    column="job_param_send_control_file_name"    />
+        <result property="jobParamReceiverControlFileName"    column="job_param_receiver_control_file_name"    />
+        <result property="typeStatus"    column="type_status"    />
+        <result property="buoyStartOrStop"    column="buoy_start_or_stop"    />
+        <result property="buoyStartOrStopStatusBack"    column="buoy_start_or_stop_status_back"    />
+        <result property="buoyStatus"    column="buoy_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectSysBuoyVo">
-        select id, job_status, communication_frequency_job_status, modulation_type_job_status, communication_system_job_status, communication_frequency_job_param, modulation_type_job_param, gain_job_param, send_control, receiver_control from sys_buoy
+        select id, code, job_status, communication_frequency_job_status, modulation_type_job_status, communication_system_job_status, communication_frequency_job_param, modulation_type_job_param, gain_job_param, send_control, receiver_control, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, type_status, buoy_start_or_stop, buoy_start_or_stop_status_back, buoy_status, remark, create_by, create_time, update_by, update_time from sys_buoy
     </sql>
 
     <select id="selectSysBuoyList" parameterType="SysBuoy" resultMap="SysBuoyResult">
         <include refid="selectSysBuoyVo"/>
         <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
             <if test="jobStatus != null  and jobStatus != ''"> and job_status = #{jobStatus}</if>
             <if test="communicationFrequencyJobStatus != null  and communicationFrequencyJobStatus != ''"> and communication_frequency_job_status = #{communicationFrequencyJobStatus}</if>
             <if test="modulationTypeJobStatus != null  and modulationTypeJobStatus != ''"> and modulation_type_job_status = #{modulationTypeJobStatus}</if>
@@ -33,6 +47,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null  and gainJobParam != ''"> and gain_job_param = #{gainJobParam}</if>
             <if test="sendControl != null  and sendControl != ''"> and send_control = #{sendControl}</if>
             <if test="receiverControl != null  and receiverControl != ''"> and receiver_control = #{receiverControl}</if>
+            <if test="jobStatusFileName != null  and jobStatusFileName != ''"> and job_status_file_name like concat('%', #{jobStatusFileName}, '%')</if>
+            <if test="jobParamSendControlFileName != null  and jobParamSendControlFileName != ''"> and job_param_send_control_file_name like concat('%', #{jobParamSendControlFileName}, '%')</if>
+            <if test="jobParamReceiverControlFileName != null  and jobParamReceiverControlFileName != ''"> and job_param_receiver_control_file_name like concat('%', #{jobParamReceiverControlFileName}, '%')</if>
+            <if test="typeStatus != null "> and type_status = #{typeStatus}</if>
+            <if test="buoyStartOrStop != null  and buoyStartOrStop != ''"> and buoy_start_or_stop = #{buoyStartOrStop}</if>
+            <if test="buoyStartOrStopStatusBack != null  and buoyStartOrStopStatusBack != ''"> and buoy_start_or_stop_status_back = #{buoyStartOrStopStatusBack}</if>
+            <if test="buoyStatus != null  and buoyStatus != ''"> and buoy_status = #{buoyStatus}</if>
         </where>
     </select>
     
@@ -44,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSysBuoy" parameterType="SysBuoy" useGeneratedKeys="true" keyProperty="id">
         insert into sys_buoy
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
             <if test="jobStatus != null">job_status,</if>
             <if test="communicationFrequencyJobStatus != null">communication_frequency_job_status,</if>
             <if test="modulationTypeJobStatus != null">modulation_type_job_status,</if>
@@ -53,8 +75,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null">gain_job_param,</if>
             <if test="sendControl != null">send_control,</if>
             <if test="receiverControl != null">receiver_control,</if>
+            <if test="jobStatusFileName != null">job_status_file_name,</if>
+            <if test="jobParamSendControlFileName != null">job_param_send_control_file_name,</if>
+            <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name,</if>
+            <if test="typeStatus != null">type_status,</if>
+            <if test="buoyStartOrStop != null">buoy_start_or_stop,</if>
+            <if test="buoyStartOrStopStatusBack != null">buoy_start_or_stop_status_back,</if>
+            <if test="buoyStatus != null">buoy_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
             <if test="jobStatus != null">#{jobStatus},</if>
             <if test="communicationFrequencyJobStatus != null">#{communicationFrequencyJobStatus},</if>
             <if test="modulationTypeJobStatus != null">#{modulationTypeJobStatus},</if>
@@ -64,12 +99,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null">#{gainJobParam},</if>
             <if test="sendControl != null">#{sendControl},</if>
             <if test="receiverControl != null">#{receiverControl},</if>
+            <if test="jobStatusFileName != null">#{jobStatusFileName},</if>
+            <if test="jobParamSendControlFileName != null">#{jobParamSendControlFileName},</if>
+            <if test="jobParamReceiverControlFileName != null">#{jobParamReceiverControlFileName},</if>
+            <if test="typeStatus != null">#{typeStatus},</if>
+            <if test="buoyStartOrStop != null">#{buoyStartOrStop},</if>
+            <if test="buoyStartOrStopStatusBack != null">#{buoyStartOrStopStatusBack},</if>
+            <if test="buoyStatus != null">#{buoyStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
     <update id="updateSysBuoy" parameterType="SysBuoy">
         update sys_buoy
         <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
             <if test="jobStatus != null">job_status = #{jobStatus},</if>
             <if test="communicationFrequencyJobStatus != null">communication_frequency_job_status = #{communicationFrequencyJobStatus},</if>
             <if test="modulationTypeJobStatus != null">modulation_type_job_status = #{modulationTypeJobStatus},</if>
@@ -79,6 +127,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null">gain_job_param = #{gainJobParam},</if>
             <if test="sendControl != null">send_control = #{sendControl},</if>
             <if test="receiverControl != null">receiver_control = #{receiverControl},</if>
+            <if test="jobStatusFileName != null">job_status_file_name = #{jobStatusFileName},</if>
+            <if test="jobParamSendControlFileName != null">job_param_send_control_file_name = #{jobParamSendControlFileName},</if>
+            <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name = #{jobParamReceiverControlFileName},</if>
+            <if test="typeStatus != null">type_status = #{typeStatus},</if>
+            <if test="buoyStartOrStop != null">buoy_start_or_stop = #{buoyStartOrStop},</if>
+            <if test="buoyStartOrStopStatusBack != null">buoy_start_or_stop_status_back = #{buoyStartOrStopStatusBack},</if>
+            <if test="buoyStatus != null">buoy_status = #{buoyStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>

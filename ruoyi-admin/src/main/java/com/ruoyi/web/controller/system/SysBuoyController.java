@@ -10,8 +10,10 @@ import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.system.domain.SysBuoy;
 import com.ruoyi.system.domain.SysBuoyInformation;
+import com.ruoyi.system.domain.SysBuoyMachine;
 import com.ruoyi.system.domain.SysBuoyRadioSensing;
 import com.ruoyi.system.service.ISysBuoyInformationService;
+import com.ruoyi.system.service.ISysBuoyMachineService;
 import com.ruoyi.system.service.ISysBuoyRadioSensingService;
 import com.ruoyi.system.service.ISysBuoyService;
 import io.swagger.annotations.Api;
@@ -24,6 +26,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,6 +51,9 @@ public class SysBuoyController extends BaseController
     @Autowired
     private ISysBuoyInformationService buoyInformationService;
 
+    @Autowired
+    private ISysBuoyMachineService buoyMachineService;
+
 
     /**
      * 浮标信息获取
@@ -56,8 +62,58 @@ public class SysBuoyController extends BaseController
     @GetMapping("/getBuoyInfo")
     public AjaxResult getBuoyInfo(SysCommunication communication)
     {
+
         SysBuoy menus = buoyService.getBuoyInfo(null, getUserId());
         return success(menus);
+    }
+
+    /**
+     * 浮标工作状态获取
+     */
+    @ApiOperation("获取浮标工作状态")
+    @GetMapping("/get/buoy/job/status")
+    public AjaxResult getBuoyJobStatus(SysBuoy buoy)
+    {
+        buoy.setTypeStatus(0L);
+        List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
+        return success(sysBuoys);
+    }
+
+    /**
+     * 浮标工作参数列表获取
+     */
+    @ApiOperation("获取浮标工作参数")
+    @GetMapping("/get/buoy/job/param")
+    public AjaxResult getBuoyJobParam(SysBuoy buoy)
+    {
+        buoy.setTypeStatus(1L);
+        List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
+        return success(sysBuoys);
+    }
+
+
+    /**
+     * 水声通信机工作状态获取
+     */
+    @ApiOperation("获取水声通信机工作状态")
+    @GetMapping("/get/buoy/machine/job/status")
+    public AjaxResult getBuoyMachineJobStatus(SysBuoyMachine buoyMachine)
+    {
+        buoyMachine.setTypeStatus(0L);
+        List<SysBuoyMachine> sysBuoyMachines = buoyMachineService.selectSysBuoyMachineList(buoyMachine);
+        return success(sysBuoyMachines);
+    }
+
+    /**
+     * 水声通信机工作参数列表获取
+     */
+    @ApiOperation("获取水声通信机工作参数")
+    @GetMapping("/get/buoy/machine/job/param")
+    public AjaxResult getBuoyMachineJobParam(SysBuoyMachine buoyMachine)
+    {
+        buoyMachine.setTypeStatus(1L);
+        List<SysBuoyMachine> sysBuoyMachines = buoyMachineService.selectSysBuoyMachineList(buoyMachine);
+        return success(sysBuoyMachines);
     }
 
     /**
@@ -192,10 +248,10 @@ public class SysBuoyController extends BaseController
     public AjaxResult getBuoyJobParam(@RequestBody String test) {
         System.out.println(test);
         long l = 1L;
-        String fileName = l + "getBuoyJobParam.txt";
-        // todo 写入文件与存储数据库处理
-        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,1L);
+//        String fileName = l + "getBuoyJobParam.txt";
+//        // todo 写入文件与存储数据库处理
+//        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
+        buoyService.saveBuoyInfo(test,1L,1L);
         return success(test);
     }
 
@@ -208,29 +264,37 @@ public class SysBuoyController extends BaseController
         System.out.println(test);
         long l = 1L;
         // todo 写入文件与存储数据库处理
-        String fileName = l + "getBuoyJobStatus.txt";
-        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,1L);
+//        String fileName = l + "getBuoyJobStatusGetC.txt";
+//        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
+        buoyService.saveBuoyInfo(test,1L,0L);
         return success(test);
     }
+
+    /**
+     * 浮标连接启动和关闭状态获取  c-java端
+     */
+    @RequestMapping("/connect/status/buoy/get/c")
+    public AjaxResult getBuoyConnectStatusGetC(@RequestBody String test)
+    {
+        System.out.println(test);
+        long l = 1L;
+        String string = UUID.randomUUID().toString();
+        // todo 写入文件与存储数据库处理
+//        String fileName = l + "getBuoyConnectStatusGetC.txt";
+//        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
+        buoyService.saveBuoyInfo(test,1L,3L);
+        return success(test);
+    }
+
 
     /**
      * 浮标信号数据显示  c-java端
      */
     @RequestMapping("/connect/buoy/information/get/c")
-    public AjaxResult getBuoyInformationForC(@RequestBody String test)
-    {
-        System.out.println(test);
-        long l = 1L;
-        // todo 写入文件与存储数据库处理
-        String fileName = l + "getBuoyJobStatus.txt";
-        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        SysBuoyInformation sysBuoyInformation = new SysBuoyInformation();
-        sysBuoyInformation.setId(l);
-        sysBuoyInformation.setInformationFileName(fileName);
-        sysBuoyInformation.setContent(test);
-        buoyInformationService.insertSysBuoyInformation(sysBuoyInformation);
-        return success(test);
+    public AjaxResult getBuoyInformationForC(@RequestParam("file") MultipartFile file) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        buoyService.analyzeBuoyInformation(file,1L);
+        return success(1);
     }
 
 
@@ -243,9 +307,36 @@ public class SysBuoyController extends BaseController
         System.out.println(test);
         long l = 1L;
         // todo 写入文件与存储数据库处理
-        String fileName = l + "getMachineJobParam.txt";
-        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyMachineInfo(test,1L);
+//        String fileName = l + "getMachineJobParam.txt";
+//        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
+        buoyService.saveBuoyMachineInfo(test,l,1L);
+        return success(test);
+    }
+
+    /**
+     * 水声通信机启动关闭连接状态获取   c-java端
+     */
+    @RequestMapping("/connect/status/machine/get/c")
+    public AjaxResult getMachineConnectStatusGetC(@RequestBody String test)
+    {
+        System.out.println(test);
+        long l = 1L;
+        // todo 写入文件与存储数据库处理
+//        String fileName = l + "getMachineConnectStatusGetC.txt";
+//        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
+        buoyService.saveBuoyMachineInfo(test,l,3L);
+        return success(test);
+    }
+
+    /**
+     * 浮标无线电感知radioSensing获取   c-java端
+     */
+    @RequestMapping("/connect/radio/sensing/get/c")
+    public AjaxResult getConnectRadioSensingGetC(@RequestBody String test)
+    {
+        System.out.println(test);
+        long l = 1L;
+        buoyService.saveBuoyRadioSensing(test,l);
         return success(test);
     }
 
@@ -258,9 +349,9 @@ public class SysBuoyController extends BaseController
         System.out.println(test);
         long l = 1L;
         // todo 写入文件与存储数据库处理
-        String fileName = l + "getMachineJobStatus.txt";
-        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyMachineInfo(test,1L);
+//        String fileName = l + "getMachineJobStatus.txt";
+//        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
+        buoyService.saveBuoyMachineInfo(test,l,0L);
         return success(test);
     }
 
@@ -332,6 +423,17 @@ public class SysBuoyController extends BaseController
     public AjaxResult uploadBuoyInformationForWeb(@RequestParam("file") MultipartFile file)
     {
         String s = buoyService.uploadBuoyInformation(file, 1L);
+        return success(s);
+    }
+
+    /**
+     * 浮标数据文件文件个数传递 并发送到c端  web-java端
+     */
+    @ApiOperation("浮标数据文件文件个数传递")
+    @RequestMapping("/connect/buoy/information/file/number/get/web")
+    public AjaxResult connectBuoyInformationFileNumberForWeb(@RequestBody String fileNumber)
+    {
+        String s = buoyService.connectBuoyInformationFileNumberForWeb(fileNumber, 1L);
         return success(s);
     }
 

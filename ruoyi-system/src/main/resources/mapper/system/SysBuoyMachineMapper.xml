@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="SysBuoyMachine" id="SysBuoyMachineResult">
         <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
         <result property="port"    column="port"    />
         <result property="baudRate"    column="baud_rate"    />
         <result property="sendGainJobStatus"    column="send_gain_job_status"    />
@@ -19,16 +20,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="jobStatusFileName"    column="job_status_file_name"    />
         <result property="jobParamSendControlFileName"    column="job_param_send_control_file_name"    />
         <result property="jobParamReceiverControlFileName"    column="job_param_receiver_control_file_name"    />
+        <result property="typeStatus"    column="type_status"    />
+        <result property="machineStartOrStop"    column="machine_start_or_stop"    />
+        <result property="machineStartOrStopStatusBack"    column="machine_start_or_stop_status_back"    />
+        <result property="machineStatus"    column="machine_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectSysBuoyMachineVo">
-        select id, port, baud_rate, send_gain_job_status, modulation_type_job_status, receiver_gain_job_status, send_gain_job_param, modulation_type_job_param, receiver_gain_job_param, send_control, receiver_control, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, create_time from sys_buoy_machine
+        select id, code, port, baud_rate, send_gain_job_status, modulation_type_job_status, receiver_gain_job_status, send_gain_job_param, modulation_type_job_param, receiver_gain_job_param, send_control, receiver_control, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, type_status, machine_start_or_stop, machine_start_or_stop_status_back, machine_status, remark, create_by, create_time, update_by, update_time from sys_buoy_machine
     </sql>
 
     <select id="selectSysBuoyMachineList" parameterType="SysBuoyMachine" resultMap="SysBuoyMachineResult">
         <include refid="selectSysBuoyMachineVo"/>
         <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
             <if test="port != null  and port != ''"> and port = #{port}</if>
             <if test="baudRate != null  and baudRate != ''"> and baud_rate = #{baudRate}</if>
             <if test="sendGainJobStatus != null  and sendGainJobStatus != ''"> and send_gain_job_status = #{sendGainJobStatus}</if>
@@ -42,6 +52,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="jobStatusFileName != null  and jobStatusFileName != ''"> and job_status_file_name like concat('%', #{jobStatusFileName}, '%')</if>
             <if test="jobParamSendControlFileName != null  and jobParamSendControlFileName != ''"> and job_param_send_control_file_name like concat('%', #{jobParamSendControlFileName}, '%')</if>
             <if test="jobParamReceiverControlFileName != null  and jobParamReceiverControlFileName != ''"> and job_param_receiver_control_file_name like concat('%', #{jobParamReceiverControlFileName}, '%')</if>
+            <if test="typeStatus != null "> and type_status = #{typeStatus}</if>
+            <if test="machineStartOrStop != null  and machineStartOrStop != ''"> and machine_start_or_stop = #{machineStartOrStop}</if>
+            <if test="machineStartOrStopStatusBack != null  and machineStartOrStopStatusBack != ''"> and machine_start_or_stop_status_back = #{machineStartOrStopStatusBack}</if>
+            <if test="machineStatus != null  and machineStatus != ''"> and machine_status = #{machineStatus}</if>
         </where>
     </select>
     
@@ -53,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSysBuoyMachine" parameterType="SysBuoyMachine" useGeneratedKeys="true" keyProperty="id">
         insert into sys_buoy_machine
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
             <if test="port != null">port,</if>
             <if test="baudRate != null">baud_rate,</if>
             <if test="sendGainJobStatus != null">send_gain_job_status,</if>
@@ -66,9 +81,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="jobStatusFileName != null">job_status_file_name,</if>
             <if test="jobParamSendControlFileName != null">job_param_send_control_file_name,</if>
             <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name,</if>
+            <if test="typeStatus != null">type_status,</if>
+            <if test="machineStartOrStop != null">machine_start_or_stop,</if>
+            <if test="machineStartOrStopStatusBack != null">machine_start_or_stop_status_back,</if>
+            <if test="machineStatus != null">machine_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
             <if test="port != null">#{port},</if>
             <if test="baudRate != null">#{baudRate},</if>
             <if test="sendGainJobStatus != null">#{sendGainJobStatus},</if>
@@ -82,13 +106,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="jobStatusFileName != null">#{jobStatusFileName},</if>
             <if test="jobParamSendControlFileName != null">#{jobParamSendControlFileName},</if>
             <if test="jobParamReceiverControlFileName != null">#{jobParamReceiverControlFileName},</if>
+            <if test="typeStatus != null">#{typeStatus},</if>
+            <if test="machineStartOrStop != null">#{machineStartOrStop},</if>
+            <if test="machineStartOrStopStatusBack != null">#{machineStartOrStopStatusBack},</if>
+            <if test="machineStatus != null">#{machineStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
     <update id="updateSysBuoyMachine" parameterType="SysBuoyMachine">
         update sys_buoy_machine
         <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
             <if test="port != null">port = #{port},</if>
             <if test="baudRate != null">baud_rate = #{baudRate},</if>
             <if test="sendGainJobStatus != null">send_gain_job_status = #{sendGainJobStatus},</if>
@@ -102,7 +135,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="jobStatusFileName != null">job_status_file_name = #{jobStatusFileName},</if>
             <if test="jobParamSendControlFileName != null">job_param_send_control_file_name = #{jobParamSendControlFileName},</if>
             <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name = #{jobParamReceiverControlFileName},</if>
+            <if test="typeStatus != null">type_status = #{typeStatus},</if>
+            <if test="machineStartOrStop != null">machine_start_or_stop = #{machineStartOrStop},</if>
+            <if test="machineStartOrStopStatusBack != null">machine_start_or_stop_status_back = #{machineStartOrStopStatusBack},</if>
+            <if test="machineStatus != null">machine_status = #{machineStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>

@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.SysBuoyMachine;
  * 浮标水声通信机业务Service接口
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public interface ISysBuoyMachineService 
 {

@@ -6,28 +6,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="SysBuoyRadioSensing" id="SysBuoyRadioSensingResult">
         <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
         <result property="jobStatus"    column="job_status"    />
         <result property="communicationFrequency"    column="communication_frequency"    />
         <result property="modulationType"    column="modulation_type"    />
         <result property="communicationSystem"    column="communication_system"    />
         <result property="azimuthAngle"    column="azimuth_angle"    />
         <result property="pitchAngle"    column="pitch_angle"    />
+        <result property="typeStatus"    column="type_status"    />
+        <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectSysBuoyRadioSensingVo">
-        select id, job_status, communication_frequency, modulation_type, communication_system, azimuth_angle, pitch_angle, create_time from sys_buoy_radio_sensing
+        select id, code, job_status, communication_frequency, modulation_type, communication_system, azimuth_angle, pitch_angle, type_status, create_by, create_time, update_by, update_time from sys_buoy_radio_sensing
     </sql>
 
     <select id="selectSysBuoyRadioSensingList" parameterType="SysBuoyRadioSensing" resultMap="SysBuoyRadioSensingResult">
         <include refid="selectSysBuoyRadioSensingVo"/>
         <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
             <if test="jobStatus != null  and jobStatus != ''"> and job_status = #{jobStatus}</if>
             <if test="communicationFrequency != null  and communicationFrequency != ''"> and communication_frequency = #{communicationFrequency}</if>
             <if test="modulationType != null  and modulationType != ''"> and modulation_type = #{modulationType}</if>
             <if test="communicationSystem != null  and communicationSystem != ''"> and communication_system = #{communicationSystem}</if>
             <if test="azimuthAngle != null  and azimuthAngle != ''"> and azimuth_angle = #{azimuthAngle}</if>
             <if test="pitchAngle != null  and pitchAngle != ''"> and pitch_angle = #{pitchAngle}</if>
+            <if test="typeStatus != null "> and type_status = #{typeStatus}</if>
         </where>
     </select>
     
@@ -39,35 +46,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSysBuoyRadioSensing" parameterType="SysBuoyRadioSensing" useGeneratedKeys="true" keyProperty="id">
         insert into sys_buoy_radio_sensing
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
             <if test="jobStatus != null">job_status,</if>
             <if test="communicationFrequency != null">communication_frequency,</if>
             <if test="modulationType != null">modulation_type,</if>
             <if test="communicationSystem != null">communication_system,</if>
             <if test="azimuthAngle != null">azimuth_angle,</if>
             <if test="pitchAngle != null">pitch_angle,</if>
+            <if test="typeStatus != null">type_status,</if>
+            <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
             <if test="jobStatus != null">#{jobStatus},</if>
             <if test="communicationFrequency != null">#{communicationFrequency},</if>
             <if test="modulationType != null">#{modulationType},</if>
             <if test="communicationSystem != null">#{communicationSystem},</if>
             <if test="azimuthAngle != null">#{azimuthAngle},</if>
             <if test="pitchAngle != null">#{pitchAngle},</if>
+            <if test="typeStatus != null">#{typeStatus},</if>
+            <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
     <update id="updateSysBuoyRadioSensing" parameterType="SysBuoyRadioSensing">
         update sys_buoy_radio_sensing
         <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
             <if test="jobStatus != null">job_status = #{jobStatus},</if>
             <if test="communicationFrequency != null">communication_frequency = #{communicationFrequency},</if>
             <if test="modulationType != null">modulation_type = #{modulationType},</if>
             <if test="communicationSystem != null">communication_system = #{communicationSystem},</if>
             <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
             <if test="pitchAngle != null">pitch_angle = #{pitchAngle},</if>
+            <if test="typeStatus != null">type_status = #{typeStatus},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>

@@ -1,5 +1,6 @@
 package com.ruoyi.common.core.domain.entity;
 
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 
@@ -41,6 +42,12 @@ public class SysCommunication extends BaseEntity
 
     /** 接收指令 */
     private String receiverControl;
+
+    /** 水声通信机启动关闭连接状态 1启动0关闭 */
+    @Excel(name = "水声通信机启动关闭连接状态 1启动0关闭")
+    private String builStartStopFrame;
+    @Excel(name = "工作状态为0工作参数为1")
+    private Integer typeStatus;
 
     public Integer getPort() {
         return port;

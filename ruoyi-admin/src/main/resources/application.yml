@@ -139,6 +139,8 @@ remoting:
       ljqt: http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt
       #浮标 工作参数配置 配置工作参数，工作参数组成远程控制指令发送
       yckzzl: http://1095rm2tl0368.vicp.fun/fb/gzcspz/yckzzl
+    xhsj:
+      xhsjwjgs: http://1095rm2tl0368.vicp.fun/fb/xhsj/xhsjwjgs
       # 水声通信机
     machine:
       # 水声通信机 通信连接 设置参数，通过串口与水声通信机通信

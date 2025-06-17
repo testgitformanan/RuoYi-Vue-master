@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.SysBuoy;
  * 浮标Mapper接口
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public interface SysBuoyMapper 
 {

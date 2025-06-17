@@ -12,7 +12,7 @@ import com.ruoyi.system.service.ISysBuoyInformationService;
  * 浮标无线电感知业务Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 @Service
 public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService 
@@ -66,6 +66,7 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     @Override
     public int updateSysBuoyInformation(SysBuoyInformation sysBuoyInformation)
     {
+        sysBuoyInformation.setUpdateTime(DateUtils.getNowDate());
         return sysBuoyInformationMapper.updateSysBuoyInformation(sysBuoyInformation);
     }
 

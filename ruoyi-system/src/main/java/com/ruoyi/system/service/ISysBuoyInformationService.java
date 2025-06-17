@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.SysBuoyInformation;
  * 浮标无线电感知业务Service接口
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public interface ISysBuoyInformationService 
 {

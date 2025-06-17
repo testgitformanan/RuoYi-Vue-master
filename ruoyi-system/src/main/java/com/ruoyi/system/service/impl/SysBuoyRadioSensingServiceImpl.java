@@ -12,7 +12,7 @@ import com.ruoyi.system.service.ISysBuoyRadioSensingService;
  * 浮标无线电感知业务Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 @Service
 public class SysBuoyRadioSensingServiceImpl implements ISysBuoyRadioSensingService 
@@ -66,6 +66,7 @@ public class SysBuoyRadioSensingServiceImpl implements ISysBuoyRadioSensingServi
     @Override
     public int updateSysBuoyRadioSensing(SysBuoyRadioSensing sysBuoyRadioSensing)
     {
+        sysBuoyRadioSensing.setUpdateTime(DateUtils.getNowDate());
         return sysBuoyRadioSensingMapper.updateSysBuoyRadioSensing(sysBuoyRadioSensing);
     }
 

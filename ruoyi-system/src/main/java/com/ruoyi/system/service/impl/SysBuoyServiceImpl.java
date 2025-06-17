@@ -6,12 +6,14 @@ import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.core.domain.entity.*;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.system.domain.SysBuoy;
 import com.ruoyi.system.domain.SysBuoyInformation;
 import com.ruoyi.system.domain.SysBuoyMachine;
+import com.ruoyi.system.domain.SysBuoyRadioSensing;
 import com.ruoyi.system.domain.vo.MetaVo;
 import com.ruoyi.system.domain.vo.RouterVo;
 import com.ruoyi.system.mapper.*;
@@ -49,6 +51,9 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     @Autowired
     private SysBuoyMapper sysBuoyMapper;
 
+    @Autowired
+    private SysBuoyInformationMapper sysBuoyInformationMapper;
+
     @Value("${remoting.cPath.fbgzcspz.ljqt}")
     private String fbtxljPath;
     @Value("${remoting.cPath.fbgzcspz.yckzzl}")
@@ -59,6 +64,11 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     private String machinegzcspzPath;
     @Value("${remoting.cPath.machine.xhypwj}")
     private String machinexhypwjPath;
+    @Value("${remoting.cPath.xhsj.xhsjwjgs}")
+    private String machinexhsjwjgsPath;
+    @Autowired
+    private SysBuoyRadioSensingMapper sysBuoyRadioSensingMapper;
+
     /**
      * 浮标启动/关闭连接
      * 
@@ -82,8 +92,10 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String apiUrl = fbtxljPath;
 //        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt";
         Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+        headers.put("Content-Type", "application/json; charset=utf-8");
         headers.put("Authorization", "Bearer your_access_token");
+        headers.put("Accept-Language", "zh-CN,zh;q=0.9");
+        headers.put("Accept", "application/json; charset=utf-8");
         String postResponse = "";
         try {
 //            communication.setPort(port);
@@ -95,6 +107,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
 //            System.out.println(jsonString);
 //            String postResponse = sendPostRequest(apiUrl, headers, jsonString);
             postResponse = sendPostRequest(apiUrl, headers, param);
+            saveBuoyInfo(param, userId,3L);
             System.out.println("POST Response: " + postResponse);
 
         } catch (IOException e) {
@@ -140,6 +153,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
 //            System.out.println(jsonString);
 //            String postResponse = sendPostRequest(apiUrl, headers, jsonString);
             postResponse = sendPostRequest(apiUrl, headers, param);
+            saveBuoyMachineInfo(param, userId,3L);
             System.out.println("POST Response: " + postResponse);
 
         } catch (IOException e) {
@@ -227,6 +241,32 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     }
 
     /**
+     * 浮标数据文件文件个数传递
+     *
+     * @param communication 浮标信息
+     * @return 菜单列表
+     */
+    @Override
+    public String connectBuoyInformationFileNumberForWeb(String communication, Long userId)
+    {
+        // 配置工作参数
+        String apiUrl = machinexhsjwjgsPath;
+//        String apiUrl = "http://1095rm2tl0368.vicp.fun/sstxj/gzcspz/yckzzl";
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer your_access_token");
+        try {
+            String postResponse = sendPostRequest(apiUrl, headers, communication);
+            System.out.println("POST Response: " + postResponse);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("我来了connect");
+        return null;
+    }
+
+    /**
      * 查询浮标详细信息
      *
      * @param communication 菜单信息
@@ -240,7 +280,6 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         SysBuoyMachine buoyMachine = new SysBuoyMachine();
         List<SysBuoyMachine> sysBuoyMachines = sysBuoyMachineMapper.selectSysBuoyMachineList(buoyMachine);
         SysBuoy sysBuoy = sysBuoyMapper.selectSysBuoyById(buoy.getId());
-        sysBuoy.setSysBuoyMachines(sysBuoyMachines);
         return sysBuoy;
     }
 
@@ -313,7 +352,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             throw new RuntimeException(e);
         }
         String jsonString = JSON.toJSONString(sysBuoyDto);
-        saveBuoyInfo(jsonString, userId);
+        saveBuoyInfo(jsonString, userId,1L);
         return jsonString;
     }
 
@@ -352,7 +391,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysBuoyDto);
-            saveBuoyInfo(jsonString, userId);
+            saveBuoyInfo(jsonString, userId,1L);
             return setBuoyJobParam(jsonString, userId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -396,7 +435,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysBuoyDto);
-            saveBuoyInfo(jsonString, userId);
+            saveBuoyInfo(jsonString, userId,0L);
             return sysBuoyDto;
         } catch (Exception e) {
             e.printStackTrace();
@@ -405,17 +444,55 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     }
 
 
+    /**
+     * 浮标导入信号数据文件
+     *
+     * @param file 浮标信息
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    public String analyzeBuoyInformation(MultipartFile file, Long userId){
+        try {
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            File file1 = File.createTempFile("temp", null);
+            file.transferTo(file1);
+            Scanner scanner = new Scanner(file1);
+
+            SysBuoyInformation sysBuoyInformation = new SysBuoyInformation();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                sysBuoyInformation.setContent(line);
+            }
+            scanner.close();
+            String jsonString = JSON.toJSONString(sysBuoyInformation);
+            sysBuoyInformationMapper.insertSysBuoyInformation(sysBuoyInformation);
+            return jsonString;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * 保存浮标工作状态 工作参数 发送指令接收指令数据
      * @param buoyInfo
      * @param userId
+     * @param typeStatus  工作状态为0工作参数为1启动停止连接2
      * @return
      */
     @Override
-    public String saveBuoyInfo(String buoyInfo,Long userId){
-        SysBuoy sysBuoy = sysBuoyMapper.selectSysBuoyById(userId);
+    public String saveBuoyInfo(String buoyInfo,Long userId,Long typeStatus) {
+        SysBuoy sysBuoy = new SysBuoy();
         JSONObject jsonObject = JSONObject.parseObject(buoyInfo);
+//        Long typeStatus = jsonObject.get("typeStatus")==null?0L:(Long)jsonObject.get("typeStatus");
+        String code = jsonObject.get("code")==null?null:(String) jsonObject.get("code");
+        sysBuoy.setTypeStatus(typeStatus);
+        sysBuoy.setCode(code);
+        List<SysBuoy> sysBuoyList = sysBuoyMapper.selectSysBuoyList(sysBuoy);
         String communicationFrequencyJobParam = jsonObject.get("communicationFrequencyJobParam")==null?null:(String)jsonObject.get("communicationFrequencyJobParam");
         String modulationTypeJobParam = jsonObject.get("modulationTypeJobParam")==null?null:(String)jsonObject.get("modulationTypeJobParam");
         String gainJobParam = jsonObject.get("gainJobParam")==null?null:(String)jsonObject.get("gainJobParam");
@@ -424,6 +501,9 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String communicationSystemJobStatus = jsonObject.get("communicationSystemJobStatus")==null?null:(String)jsonObject.get("communicationSystemJobStatus");
         String sendControl = jsonObject.get("sendControl")==null?null:(String)jsonObject.get("sendControl");
         String receiverControl = jsonObject.get("receiverControl")==null?null:(String)jsonObject.get("receiverControl");
+        String buoyStartOrStop = jsonObject.get("buoyStartOrStop")==null?null:(String)jsonObject.get("buoyStartOrStop");
+        String buoyStartOrStopStatusBack = jsonObject.get("buoyStartOrStopStatusBack")==null?null:(String)jsonObject.get("buoyStartOrStopStatusBack");
+        String buoyStatus = jsonObject.get("buoyStatus")==null?null:(String)jsonObject.get("buoyStatus");
         sysBuoy.setCommunicationFrequencyJobStatus(communicationFrequencyJobStatus);
         sysBuoy.setModulationTypeJobStatus(modulationTypeJobStatus);
         sysBuoy.setCommunicationSystemJobStatus(communicationSystemJobStatus);
@@ -432,10 +512,18 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         sysBuoy.setGainJobParam(gainJobParam);
         sysBuoy.setSendControl(sendControl);
         sysBuoy.setReceiverControl(receiverControl);
-        if(sysBuoy == null){
+        sysBuoy.setCreateBy(String.valueOf(userId));
+        sysBuoy.setTypeStatus(typeStatus);
+        sysBuoy.setCode(code);
+        sysBuoy.setBuoyStartOrStop(buoyStartOrStop);
+        sysBuoy.setBuoyStartOrStopStatusBack(buoyStartOrStopStatusBack);
+        sysBuoy.setBuoyStatus(buoyStatus);
+        if(sysBuoyList == null || sysBuoyList.isEmpty()){
             sysBuoy.setId(userId);
             sysBuoyMapper.insertSysBuoy(sysBuoy);
         }else {
+            SysBuoy sysBuoy1 = sysBuoyList.get(0);
+            sysBuoy.setId(sysBuoy1.getId());
             sysBuoyMapper.updateSysBuoy(sysBuoy);
         }
         return JSON.toJSONString(sysBuoy);
@@ -446,12 +534,18 @@ public class SysBuoyServiceImpl implements ISysBuoyService
      * 保存水声通信机工作状态 工作参数 发送指令接收指令数据
      * @param buoyInfo
      * @param userId
+     * @param typeStatus  工作状态为0工作参数为1启动停止连接2
      * @return
      */
     @Override
-    public String saveBuoyMachineInfo(String buoyInfo,Long userId){
-        SysBuoyMachine sysBuoyMachine = sysBuoyMachineMapper.selectSysBuoyMachineById(userId);
+    public String saveBuoyMachineInfo(String buoyInfo,Long userId,Long typeStatus){
+        SysBuoyMachine sysBuoyMachine = new SysBuoyMachine();
         JSONObject jsonObject = JSONObject.parseObject(buoyInfo);
+//        Long typeStatus = jsonObject.get("typeStatus")==null?0L:(Long)jsonObject.get("typeStatus");
+        String code = jsonObject.get("code")==null?null:(String) jsonObject.get("code");
+        sysBuoyMachine.setTypeStatus(typeStatus);
+        sysBuoyMachine.setCode(code);
+        List<SysBuoyMachine> selectSysBuoyMachineList = sysBuoyMachineMapper.selectSysBuoyMachineList(sysBuoyMachine);
         String port = jsonObject.get("port")==null?null:(String)jsonObject.get("port");
         String baudRate = jsonObject.get("baudRate")==null?null:(String)jsonObject.get("baudRate");
         String modulationTypeJobStatus = jsonObject.get("modulationTypeJobStatus")==null?null:(String)jsonObject.get("modulationTypeJobStatus");
@@ -462,6 +556,9 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String receiverGainJobParam = jsonObject.get("receiverGainJobParam")==null?null:(String)jsonObject.get("receiverGainJobParam");
         String sendControl = jsonObject.get("sendControl")==null?null:(String)jsonObject.get("sendControl");
         String receiverControl = jsonObject.get("receiverControl")==null?null:(String)jsonObject.get("receiverControl");
+        String machineStartOrStop = jsonObject.get("machineStartOrStop")==null?null:(String)jsonObject.get("machineStartOrStop");
+        String machineStartOrStopStatusBack = jsonObject.get("machineStartOrStopStatusBack")==null?null:(String)jsonObject.get("machineStartOrStopStatusBack");
+        String machineStatus = jsonObject.get("machineStatus")==null?null:(String)jsonObject.get("machineStatus");
         sysBuoyMachine.setPort(port);
         sysBuoyMachine.setBaudRate(baudRate);
         sysBuoyMachine.setReceiverGainJobStatus(receiverGainJobStatus);
@@ -472,13 +569,58 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         sysBuoyMachine.setReceiverGainJobParam(receiverGainJobParam);
         sysBuoyMachine.setSendControl(sendControl);
         sysBuoyMachine.setReceiverControl(receiverControl);
-        if(sysBuoyMachine == null){
+        sysBuoyMachine.setCreateBy(String.valueOf(userId));
+
+        sysBuoyMachine.setTypeStatus(typeStatus);
+        sysBuoyMachine.setCode(code);
+        sysBuoyMachine.setMachineStartOrStop(machineStartOrStop);
+        sysBuoyMachine.setMachineStartOrStopStatusBack(machineStartOrStopStatusBack);
+        sysBuoyMachine.setMachineStatus(machineStatus);
+        if(selectSysBuoyMachineList == null || selectSysBuoyMachineList.isEmpty()){
             sysBuoyMachine.setId(userId);
             sysBuoyMachineMapper.insertSysBuoyMachine(sysBuoyMachine);
         }else {
+            SysBuoyMachine sysBuoyMachine1 = selectSysBuoyMachineList.get(0);
+            sysBuoyMachine.setId(sysBuoyMachine1.getId());
             sysBuoyMachineMapper.updateSysBuoyMachine(sysBuoyMachine);
         }
         return JSON.toJSONString(sysBuoyMachine);
+    }
+
+    /**
+     * 保存水声通信机工作状态 工作参数 发送指令接收指令数据
+     * @param buoyInfo
+     * @param userId
+     * @return
+     */
+    @Override
+    public String saveBuoyRadioSensing(String buoyInfo,Long userId){
+        SysBuoyRadioSensing sysBuoyRadioSensing = sysBuoyRadioSensingMapper.selectSysBuoyRadioSensingById(userId);
+        JSONObject jsonObject = JSONObject.parseObject(buoyInfo);
+        String jobStatus = jsonObject.get("jobStatus")==null?null:(String)jsonObject.get("jobStatus");
+        String communicationFrequency = jsonObject.get("communicationFrequency")==null?null:(String)jsonObject.get("communicationFrequency");
+        String modulationType = jsonObject.get("modulationType")==null?null:(String)jsonObject.get("modulationType");
+        String communicationSystem = jsonObject.get("communicationSystem")==null?null:(String)jsonObject.get("communicationSystem");
+        String azimuthAngle = jsonObject.get("azimuthAngle")==null?null:(String)jsonObject.get("azimuthAngle");
+        String pitchAngle = jsonObject.get("pitchAngle")==null?null:(String)jsonObject.get("pitchAngle");
+        String typeStatus = jsonObject.get("typeStatus")==null?"0":(String)jsonObject.get("typeStatus");
+        String code = jsonObject.get("code")==null?null:(String) jsonObject.get("code");
+        sysBuoyRadioSensing.setCode(code);
+        sysBuoyRadioSensing.setAzimuthAngle(azimuthAngle);
+        sysBuoyRadioSensing.setPitchAngle(pitchAngle);
+        sysBuoyRadioSensing.setCommunicationSystem(communicationSystem);
+        sysBuoyRadioSensing.setCommunicationFrequency(communicationFrequency);
+        sysBuoyRadioSensing.setModulationType(modulationType);
+        sysBuoyRadioSensing.setTypeStatus(Long.valueOf(typeStatus));
+        sysBuoyRadioSensing.setJobStatus(jobStatus);
+
+//        if(sysBuoyMachine == null){
+//            sysBuoyMachine.setId(userId);
+        sysBuoyRadioSensingMapper.insertSysBuoyRadioSensing(sysBuoyRadioSensing);
+//        }else {
+//            sysBuoyMachineMapper.updateSysBuoyMachine(sysBuoyMachine);
+//        }
+        return JSON.toJSONString(sysBuoyRadioSensing);
     }
 
 
@@ -517,7 +659,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysBuoyMachine);
-            saveBuoyMachineInfo(jsonString, userId);
+            saveBuoyMachineInfo(jsonString, userId,1L);
             return setMachineJobParam(jsonString, userId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -561,7 +703,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysBuoyDto);
-            saveBuoyInfo(jsonString, userId);
+            saveBuoyInfo(jsonString, userId,0L);
             return sysBuoyDto;
         } catch (Exception e) {
             e.printStackTrace();
@@ -646,4 +788,78 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         return null;
     }
 
+
+    /**
+     * 查询浮标
+     *
+     * @param id 浮标主键
+     * @return 浮标
+     */
+    @Override
+    public SysBuoy selectSysBuoyById(Long id)
+    {
+        return sysBuoyMapper.selectSysBuoyById(id);
+    }
+
+    /**
+     * 查询浮标列表
+     *
+     * @param sysBuoy 浮标
+     * @return 浮标
+     */
+    @Override
+    public List<SysBuoy> selectSysBuoyList(SysBuoy sysBuoy)
+    {
+        return sysBuoyMapper.selectSysBuoyList(sysBuoy);
+    }
+
+    /**
+     * 新增浮标
+     *
+     * @param sysBuoy 浮标
+     * @return 结果
+     */
+    @Override
+    public int insertSysBuoy(SysBuoy sysBuoy)
+    {
+        sysBuoy.setCreateTime(DateUtils.getNowDate());
+        return sysBuoyMapper.insertSysBuoy(sysBuoy);
+    }
+
+    /**
+     * 修改浮标
+     *
+     * @param sysBuoy 浮标
+     * @return 结果
+     */
+    @Override
+    public int updateSysBuoy(SysBuoy sysBuoy)
+    {
+        sysBuoy.setUpdateTime(DateUtils.getNowDate());
+        return sysBuoyMapper.updateSysBuoy(sysBuoy);
+    }
+
+    /**
+     * 批量删除浮标
+     *
+     * @param ids 需要删除的浮标主键
+     * @return 结果
+     */
+    @Override
+    public int deleteSysBuoyByIds(Long[] ids)
+    {
+        return sysBuoyMapper.deleteSysBuoyByIds(ids);
+    }
+
+    /**
+     * 删除浮标信息
+     *
+     * @param id 浮标主键
+     * @return 结果
+     */
+    @Override
+    public int deleteSysBuoyById(Long id)
+    {
+        return sysBuoyMapper.deleteSysBuoyById(id);
+    }
 }

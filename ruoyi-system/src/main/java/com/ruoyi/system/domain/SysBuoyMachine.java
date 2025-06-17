@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 浮标水声通信机业务对象 sys_buoy_machine
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public class SysBuoyMachine extends BaseEntity
 {
@@ -17,6 +17,10 @@ public class SysBuoyMachine extends BaseEntity
 
     /** 编号 */
     private Long id;
+
+    /** 批次标识 */
+    @Excel(name = "批次标识")
+    private String code;
 
     /** 端口 */
     @Excel(name = "端口")
@@ -70,9 +74,21 @@ public class SysBuoyMachine extends BaseEntity
     @Excel(name = "工作参数-接收指令-文件名称")
     private String jobParamReceiverControlFileName;
 
-    /** 水声通信机启动关闭连接状态 1启动0关闭 */
-    @Excel(name = "水声通信机启动关闭连接状态 1启动0关闭")
-    private String builStartStopFrame;
+    /** 工作状态为0工作参数为 */
+    @Excel(name = "工作状态为0工作参数为")
+    private Long typeStatus;
+
+    /** 水声通信机启动关闭连接状态传递给c端 启动连接：1   停止连接：0  链接中：2 */
+    @Excel(name = "水声通信机启动关闭连接状态传递给c端 启动连接：1   停止连接：0  链接中：2")
+    private String machineStartOrStop;
+
+    /** 水声通信机启动关闭连接状态 已启动：1  未启动：0 */
+    @Excel(name = "水声通信机启动关闭连接状态 已启动：1  未启动：0")
+    private String machineStartOrStopStatusBack;
+
+    /** 水声通信机工作状态 运行中：1  待机中：0  */
+    @Excel(name = "水声通信机工作状态 运行中：1  待机中：0 ")
+    private String machineStatus;
 
     public void setId(Long id) 
     {
@@ -82,6 +98,16 @@ public class SysBuoyMachine extends BaseEntity
     public Long getId() 
     {
         return id;
+    }
+
+    public void setCode(String code) 
+    {
+        this.code = code;
+    }
+
+    public String getCode() 
+    {
+        return code;
     }
 
     public void setPort(String port) 
@@ -214,10 +240,51 @@ public class SysBuoyMachine extends BaseEntity
         return jobParamReceiverControlFileName;
     }
 
+    public void setTypeStatus(Long typeStatus) 
+    {
+        this.typeStatus = typeStatus;
+    }
+
+    public Long getTypeStatus() 
+    {
+        return typeStatus;
+    }
+
+    public void setMachineStartOrStop(String machineStartOrStop) 
+    {
+        this.machineStartOrStop = machineStartOrStop;
+    }
+
+    public String getMachineStartOrStop() 
+    {
+        return machineStartOrStop;
+    }
+
+    public void setMachineStartOrStopStatusBack(String machineStartOrStopStatusBack) 
+    {
+        this.machineStartOrStopStatusBack = machineStartOrStopStatusBack;
+    }
+
+    public String getMachineStartOrStopStatusBack() 
+    {
+        return machineStartOrStopStatusBack;
+    }
+
+    public void setMachineStatus(String machineStatus) 
+    {
+        this.machineStatus = machineStatus;
+    }
+
+    public String getMachineStatus() 
+    {
+        return machineStatus;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+            .append("code", getCode())
             .append("port", getPort())
             .append("baudRate", getBaudRate())
             .append("sendGainJobStatus", getSendGainJobStatus())
@@ -231,15 +298,15 @@ public class SysBuoyMachine extends BaseEntity
             .append("jobStatusFileName", getJobStatusFileName())
             .append("jobParamSendControlFileName", getJobParamSendControlFileName())
             .append("jobParamReceiverControlFileName", getJobParamReceiverControlFileName())
+            .append("typeStatus", getTypeStatus())
+            .append("machineStartOrStop", getMachineStartOrStop())
+            .append("machineStartOrStopStatusBack", getMachineStartOrStopStatusBack())
+            .append("machineStatus", getMachineStatus())
+            .append("remark", getRemark())
+            .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .toString();
-    }
-
-    public String getBuilStartStopFrame() {
-        return builStartStopFrame;
-    }
-
-    public void setBuilStartStopFrame(String builStartStopFrame) {
-        this.builStartStopFrame = builStartStopFrame;
     }
 }

@@ -12,7 +12,7 @@ import com.ruoyi.system.service.ISysBuoyMachineService;
  * 浮标水声通信机业务Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 @Service
 public class SysBuoyMachineServiceImpl implements ISysBuoyMachineService 
@@ -66,6 +66,7 @@ public class SysBuoyMachineServiceImpl implements ISysBuoyMachineService
     @Override
     public int updateSysBuoyMachine(SysBuoyMachine sysBuoyMachine)
     {
+        sysBuoyMachine.setUpdateTime(DateUtils.getNowDate());
         return sysBuoyMachineMapper.updateSysBuoyMachine(sysBuoyMachine);
     }
 

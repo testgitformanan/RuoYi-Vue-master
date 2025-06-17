@@ -5,13 +5,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
-import java.util.List;
-
 /**
  * 浮标对象 sys_buoy
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public class SysBuoy extends BaseEntity
 {
@@ -20,12 +18,13 @@ public class SysBuoy extends BaseEntity
     /** 编号 */
     private Long id;
 
+    /** 批次标识 */
+    @Excel(name = "批次标识")
+    private String code;
+
     /** 工作状态 */
     @Excel(name = "工作状态")
     private String jobStatus;
-
-    /** 水聲通信機信息 */
-    private List<SysBuoyMachine> sysBuoyMachines;
 
     /** 工作状态-通信频率 */
     @Excel(name = "工作状态-通信频率")
@@ -71,9 +70,21 @@ public class SysBuoy extends BaseEntity
     @Excel(name = "工作参数-接收指令-文件名称")
     private String jobParamReceiverControlFileName;
 
-    /** 浮标启动关闭连接状态 1启动0关闭 */
-    @Excel(name = "浮标启动关闭连接状态 1启动0关闭")
-    private String builStartStopFrame;
+    /** 工作状态为0工作参数为1启动停止连接2 */
+    @Excel(name = "工作状态为0工作参数为1启动停止连接2")
+    private Long typeStatus;
+
+    /** 浮标启动关闭连接状态传递给c端 启动连接：1   停止连接：0  链接中：2 */
+    @Excel(name = "浮标启动关闭连接状态传递给c端 启动连接：1   停止连接：0  链接中：2")
+    private String buoyStartOrStop;
+
+    /** 浮标启动关闭连接状态 已启动：1  未启动：0 */
+    @Excel(name = "浮标启动关闭连接状态 已启动：1  未启动：0")
+    private String buoyStartOrStopStatusBack;
+
+    /** 浮标工作状态 运行中：1  待机中：0  */
+    @Excel(name = "浮标工作状态 运行中：1  待机中：0 ")
+    private String buoyStatus;
 
     public void setId(Long id) 
     {
@@ -83,6 +94,16 @@ public class SysBuoy extends BaseEntity
     public Long getId() 
     {
         return id;
+    }
+
+    public void setCode(String code) 
+    {
+        this.code = code;
+    }
+
+    public String getCode() 
+    {
+        return code;
     }
 
     public void setJobStatus(String jobStatus) 
@@ -205,26 +226,51 @@ public class SysBuoy extends BaseEntity
         return jobParamReceiverControlFileName;
     }
 
-    public List<SysBuoyMachine> getSysBuoyMachines() {
-        return sysBuoyMachines;
+    public void setTypeStatus(Long typeStatus) 
+    {
+        this.typeStatus = typeStatus;
     }
 
-    public void setSysBuoyMachines(List<SysBuoyMachine> sysBuoyMachines) {
-        this.sysBuoyMachines = sysBuoyMachines;
+    public Long getTypeStatus() 
+    {
+        return typeStatus;
     }
 
-    public String getBuilStartStopFrame() {
-        return builStartStopFrame;
+    public void setBuoyStartOrStop(String buoyStartOrStop) 
+    {
+        this.buoyStartOrStop = buoyStartOrStop;
     }
 
-    public void setBuilStartStopFrame(String builStartStopFrame) {
-        this.builStartStopFrame = builStartStopFrame;
+    public String getBuoyStartOrStop() 
+    {
+        return buoyStartOrStop;
+    }
+
+    public void setBuoyStartOrStopStatusBack(String buoyStartOrStopStatusBack) 
+    {
+        this.buoyStartOrStopStatusBack = buoyStartOrStopStatusBack;
+    }
+
+    public String getBuoyStartOrStopStatusBack() 
+    {
+        return buoyStartOrStopStatusBack;
+    }
+
+    public void setBuoyStatus(String buoyStatus) 
+    {
+        this.buoyStatus = buoyStatus;
+    }
+
+    public String getBuoyStatus() 
+    {
+        return buoyStatus;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+            .append("code", getCode())
             .append("jobStatus", getJobStatus())
             .append("communicationFrequencyJobStatus", getCommunicationFrequencyJobStatus())
             .append("modulationTypeJobStatus", getModulationTypeJobStatus())
@@ -237,7 +283,15 @@ public class SysBuoy extends BaseEntity
             .append("jobStatusFileName", getJobStatusFileName())
             .append("jobParamSendControlFileName", getJobParamSendControlFileName())
             .append("jobParamReceiverControlFileName", getJobParamReceiverControlFileName())
+            .append("typeStatus", getTypeStatus())
+            .append("buoyStartOrStop", getBuoyStartOrStop())
+            .append("buoyStartOrStopStatusBack", getBuoyStartOrStopStatusBack())
+            .append("buoyStatus", getBuoyStatus())
+            .append("remark", getRemark())
+            .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .toString();
     }
 }

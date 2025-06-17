@@ -1,5 +1,7 @@
 package com.ruoyi.common.core.domain.entity;
 
+import com.ruoyi.common.annotation.Excel;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,13 @@ public class SysBuoyDto {
 
     // 水声通信机
     private SysCommunication sysCommunication;
+
+    /** 浮标启动关闭连接状态 1启动0关闭 */
+    @Excel(name = "浮标启动关闭连接状态 1启动0关闭")
+    private String builStartStopFrame;
+
+    @Excel(name = "工作状态为0工作参数为1")
+    private Integer typeStatus;
 
 
     public Integer getId() {

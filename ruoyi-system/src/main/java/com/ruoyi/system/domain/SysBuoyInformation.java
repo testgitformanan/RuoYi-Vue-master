@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 浮标无线电感知业务对象 sys_buoy_information
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public class SysBuoyInformation extends BaseEntity
 {
@@ -17,6 +17,10 @@ public class SysBuoyInformation extends BaseEntity
 
     /** 编号 */
     private Long id;
+
+    /** 批次标识 */
+    @Excel(name = "批次标识")
+    private String code;
 
     /** 信号内容 */
     @Excel(name = "信号内容")
@@ -34,6 +38,16 @@ public class SysBuoyInformation extends BaseEntity
     public Long getId() 
     {
         return id;
+    }
+
+    public void setCode(String code) 
+    {
+        this.code = code;
+    }
+
+    public String getCode() 
+    {
+        return code;
     }
 
     public void setContent(String content) 
@@ -60,9 +74,13 @@ public class SysBuoyInformation extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+            .append("code", getCode())
             .append("content", getContent())
             .append("informationFileName", getInformationFileName())
+            .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .toString();
     }
 }

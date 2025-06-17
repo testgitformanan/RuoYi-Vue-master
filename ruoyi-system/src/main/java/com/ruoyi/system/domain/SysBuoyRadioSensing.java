@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 浮标无线电感知业务对象 sys_buoy_radio_sensing
  * 
  * @author ruoyi
- * @date 2025-06-14
+ * @date 2025-06-17
  */
 public class SysBuoyRadioSensing extends BaseEntity
 {
@@ -17,6 +17,10 @@ public class SysBuoyRadioSensing extends BaseEntity
 
     /** 编号 */
     private Long id;
+
+    /** 批次标识 */
+    @Excel(name = "批次标识")
+    private String code;
 
     /** 工作状态 */
     @Excel(name = "工作状态")
@@ -42,6 +46,10 @@ public class SysBuoyRadioSensing extends BaseEntity
     @Excel(name = "俯仰角")
     private String pitchAngle;
 
+    /** 工作状态为0工作参数为1 */
+    @Excel(name = "工作状态为0工作参数为1")
+    private Long typeStatus;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -50,6 +58,16 @@ public class SysBuoyRadioSensing extends BaseEntity
     public Long getId() 
     {
         return id;
+    }
+
+    public void setCode(String code) 
+    {
+        this.code = code;
+    }
+
+    public String getCode() 
+    {
+        return code;
     }
 
     public void setJobStatus(String jobStatus) 
@@ -112,17 +130,32 @@ public class SysBuoyRadioSensing extends BaseEntity
         return pitchAngle;
     }
 
+    public void setTypeStatus(Long typeStatus) 
+    {
+        this.typeStatus = typeStatus;
+    }
+
+    public Long getTypeStatus() 
+    {
+        return typeStatus;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+            .append("code", getCode())
             .append("jobStatus", getJobStatus())
             .append("communicationFrequency", getCommunicationFrequency())
             .append("modulationType", getModulationType())
             .append("communicationSystem", getCommunicationSystem())
             .append("azimuthAngle", getAzimuthAngle())
             .append("pitchAngle", getPitchAngle())
+            .append("typeStatus", getTypeStatus())
+            .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .toString();
     }
 }
