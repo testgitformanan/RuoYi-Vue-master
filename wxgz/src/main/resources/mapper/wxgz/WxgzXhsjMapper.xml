@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wxgz.mapper.WxgzXhsjMapper">
+
+    <resultMap type="WxgzXhsj" id="WxgzXhsjResult">
+        <result property="id" column="id"/>
+        <result property="date" column="date"/>
+        <result property="hz" column="hz"/>
+        <result property="db" column="db"/>
+        <result property="content" column="content"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectWxgzXhsjVo">
+        select id, date, hz, db, content, create_time, update_time
+        from wxgz_xhsj
+    </sql>
+
+    <select id="selectWxgzXhsjList" parameterType="WxgzXhsj" resultMap="WxgzXhsjResult">
+        <include refid="selectWxgzXhsjVo"/>
+        <where>
+            <if test="date != null  and date != ''">and date = #{date}</if>
+            <if test="hz != null  and hz != ''">and hz = #{hz}</if>
+            <if test="db != null  and db != ''">and db = #{db}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date &lt;= #{params.endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWxgzXhsjById" parameterType="Long" resultMap="WxgzXhsjResult">
+        <include refid="selectWxgzXhsjVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWxgzXhsj" parameterType="WxgzXhsj" useGeneratedKeys="true" keyProperty="id">
+        insert into wxgz_xhsj
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="date != null">date,</if>
+            <if test="hz != null">hz,</if>
+            <if test="db != null">db,</if>
+            <if test="content != null">content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="date != null">#{date},</if>
+            <if test="hz != null">#{hz},</if>
+            <if test="db != null">#{db},</if>
+            <if test="content != null">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWxgzXhsj" parameterType="WxgzXhsj">
+        update wxgz_xhsj
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="date != null">date = #{date},</if>
+            <if test="hz != null">hz = #{hz},</if>
+            <if test="db != null">db = #{db},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWxgzXhsjById" parameterType="Long">
+        delete
+        from wxgz_xhsj
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteWxgzXhsjByIds" parameterType="String">
+        delete from wxgz_xhsj where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wxgz.mapper.WxgzGzcspzMapper">
+
+    <resultMap type="WxgzGzcspz" id="WxgzGzcspzResult">
+        <result property="id" column="id"/>
+        <result property="hz" column="hz"/>
+        <result property="speed" column="speed"/>
+        <result property="height" column="height"/>
+        <result property="mode" column="mode"/>
+        <result property="date" column="date"/>
+        <result property="content" column="content"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectWxgzGzcspzVo">
+        select id, hz, speed, height, mode, date, content, create_time, update_time
+        from wxgz_gzcspz
+    </sql>
+
+    <select id="selectWxgzGzcspzList" parameterType="WxgzGzcspz" resultMap="WxgzGzcspzResult">
+        <include refid="selectWxgzGzcspzVo"/>
+        <where>
+            <if test="hz != null  and hz != ''">and hz = #{hz}</if>
+            <if test="speed != null  and speed != ''">and speed = #{speed}</if>
+            <if test="height != null  and height != ''">and height = #{height}</if>
+            <if test="mode != null  and mode != ''">and mode = #{mode}</if>
+            <if test="date != null  and date != ''">and date = #{date}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date &lt;= #{params.endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWxgzGzcspzById" parameterType="Long" resultMap="WxgzGzcspzResult">
+        <include refid="selectWxgzGzcspzVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWxgzGzcspz" parameterType="WxgzGzcspz" useGeneratedKeys="true" keyProperty="id">
+        insert into wxgz_gzcspz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hz != null">hz,</if>
+            <if test="speed != null">speed,</if>
+            <if test="height != null">height,</if>
+            <if test="mode != null">mode,</if>
+            <if test="date != null">date,</if>
+            <if test="content != null">content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hz != null">#{hz},</if>
+            <if test="speed != null">#{speed},</if>
+            <if test="height != null">#{height},</if>
+            <if test="mode != null">#{mode},</if>
+            <if test="date != null">#{date},</if>
+            <if test="content != null">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWxgzGzcspz" parameterType="WxgzGzcspz">
+        update wxgz_gzcspz
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hz != null">hz = #{hz},</if>
+            <if test="speed != null">speed = #{speed},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="mode != null">mode = #{mode},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWxgzGzcspzById" parameterType="Long">
+        delete
+        from wxgz_gzcspz
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteWxgzGzcspzByIds" parameterType="String">
+        delete from wxgz_gzcspz where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
