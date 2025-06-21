@@ -92,10 +92,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String apiUrl = fbtxljPath;
 //        String apiUrl = "http://1095rm2tl0368.vicp.fun/fb/gzcspz/ljqt";
         Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json; charset=utf-8");
+        headers.put("Content-Type", "application/json; ");
         headers.put("Authorization", "Bearer your_access_token");
-        headers.put("Accept-Language", "zh-CN,zh;q=0.9");
-        headers.put("Accept", "application/json; charset=utf-8");
         String postResponse = "";
         try {
 //            communication.setPort(port);
@@ -109,7 +107,6 @@ public class SysBuoyServiceImpl implements ISysBuoyService
             postResponse = sendPostRequest(apiUrl, headers, param);
             saveBuoyInfo(param, userId,3L);
             System.out.println("POST Response: " + postResponse);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
