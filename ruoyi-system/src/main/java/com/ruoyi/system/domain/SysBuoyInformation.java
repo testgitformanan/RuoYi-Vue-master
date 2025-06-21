@@ -6,10 +6,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 浮标无线电感知业务对象 sys_buoy_information
+ * 浮标信号数据业务对象 sys_buoy_information
  * 
  * @author ruoyi
- * @date 2025-06-17
+ * @date 2025-06-21
  */
 public class SysBuoyInformation extends BaseEntity
 {
@@ -29,6 +29,10 @@ public class SysBuoyInformation extends BaseEntity
     /** 信号数据文件路径 */
     @Excel(name = "信号数据文件路径")
     private String informationFileName;
+
+    /** 文件个数 */
+    @Excel(name = "文件个数")
+    private String fileNumber;
 
     public void setId(Long id) 
     {
@@ -70,6 +74,16 @@ public class SysBuoyInformation extends BaseEntity
         return informationFileName;
     }
 
+    public void setFileNumber(String fileNumber) 
+    {
+        this.fileNumber = fileNumber;
+    }
+
+    public String getFileNumber() 
+    {
+        return fileNumber;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -77,6 +91,8 @@ public class SysBuoyInformation extends BaseEntity
             .append("code", getCode())
             .append("content", getContent())
             .append("informationFileName", getInformationFileName())
+            .append("fileNumber", getFileNumber())
+            .append("remark", getRemark())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

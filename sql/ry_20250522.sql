@@ -717,7 +717,7 @@ modulation_type_job_status    varchar(100)                               comment
 communication_system_job_status       varchar(100)                               comment '工作状态-通信体制',
 communication_frequency_job_param       varchar(100)                               comment '工作参数-通信频率',
 modulation_type_job_param    varchar(100)                               comment '工作参数-调制方式',
-gain_job_param       varchar(100)                               comment '工作参数-通信体制',
+gain_job_param       varchar(100)                               comment '工作参数-发射增益',
 send_control       varchar(1000)                               comment '发送指令',
 receiver_control       varchar(1000)                               comment '接收指令',
 job_status_file_name        varchar(500)                               comment '工作状态-文件名称',
@@ -729,9 +729,9 @@ buoy_start_or_stop_status_back  varchar(100) comment '浮标启动关闭连接�
 buoy_status  varchar(100) comment '浮标工作状态 运行中：1  待机中：0 ',
 remark varchar(100) comment '备注预留字段',
 create_by         varchar(64)     default ''                 comment '创建者',
-create_time 	    datetime                                   comment '创建时间',
+create_time 	    datetime      DEFAULT CURRENT_TIMESTAMP                             comment '创建时间',
 update_by         varchar(64)     default ''                 comment '更新者',
-update_time       datetime                                   comment '更新时间',
+update_time       datetime      DEFAULT CURRENT_TIMESTAMP                             comment '更新时间',
 primary key (id)
 ) engine=innodb auto_increment=1 comment = '浮标表';
 
@@ -751,9 +751,9 @@ azimuth_angle       varchar(1000)                               comment '方位�
 pitch_angle       varchar(1000)                               comment '俯仰角',
 type_status  int  comment '工作状态为0工作参数为1',
 create_by         varchar(64)     default ''                 comment '创建者',
-create_time 	    datetime                                   comment '创建时间',
+create_time 	    datetime      DEFAULT CURRENT_TIMESTAMP                             comment '创建时间',
 update_by         varchar(64)     default ''                 comment '更新者',
-update_time       datetime                                   comment '更新时间',
+update_time       datetime       DEFAULT CURRENT_TIMESTAMP                            comment '更新时间',
 primary key (id)
 ) engine=innodb auto_increment=1 comment = '浮标无线电感知业务表';
 
@@ -783,9 +783,9 @@ machine_start_or_stop_status_back  varchar(100) comment '水声通信机启动�
 machine_status  varchar(100) comment '水声通信机工作状态 运行中：1  待机中：0 ',
 remark varchar(100) comment '备注预留字段',
 create_by         varchar(64)     default ''                 comment '创建者',
-create_time 	    datetime                                   comment '创建时间',
+create_time 	    datetime      DEFAULT CURRENT_TIMESTAMP                             comment '创建时间',
 update_by         varchar(64)     default ''                 comment '更新者',
-update_time       datetime                                   comment '更新时间',
+update_time       datetime       DEFAULT CURRENT_TIMESTAMP                            comment '更新时间',
 primary key (id)
 ) engine=innodb auto_increment=1 comment = '浮标水声通信机业务表';
 
@@ -799,9 +799,11 @@ id         bigint(20)      not null auto_increment    comment '编号',
 code  varchar(100) comment '批次标识',
 content        blob                               comment '信号内容',
 information_file_name       varchar(200)                               comment '信号数据文件路径',
+file_number       varchar(200)                               comment '文件个数',
+remark       varchar(200)                               comment '备注',
 create_by         varchar(64)     default ''                 comment '创建者',
-create_time 	    datetime                                   comment '创建时间',
+create_time 	    datetime       DEFAULT CURRENT_TIMESTAMP                            comment '创建时间',
 update_by         varchar(64)     default ''                 comment '更新者',
-update_time       datetime                                   comment '更新时间',
+update_time       datetime         DEFAULT CURRENT_TIMESTAMP                          comment '更新时间',
 primary key (id)
 ) engine=innodb auto_increment=1 comment = '浮标信号数据业务表';

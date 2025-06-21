@@ -124,7 +124,7 @@ public interface ISysBuoyService
      * @param userId
      * @return
      */
-    String analyzeBuoyInformation(MultipartFile file, Long userId);
+    String analyzeBuoyInformation(MultipartFile file, Long userId,String fileName);
 
 
 

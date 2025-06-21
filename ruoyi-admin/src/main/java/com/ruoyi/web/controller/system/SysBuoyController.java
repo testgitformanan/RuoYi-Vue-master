@@ -1,11 +1,13 @@
 package com.ruoyi.web.controller.system;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysBuoyDto;
 import com.ruoyi.common.core.domain.entity.SysCommunication;
 import com.ruoyi.common.core.domain.entity.SysMenu;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.system.domain.SysBuoy;
@@ -66,14 +68,17 @@ public class SysBuoyController extends BaseController
         HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
         SysBuoy buoy = new SysBuoy();
         buoy.setTypeStatus(0L);
+        startOrderBy();
         List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
         objectObjectHashMap.put("fbgzzt", sysBuoys);
         SysBuoy buoy1 = new SysBuoy();
         buoy1.setTypeStatus(1L);
+        startOrderBy();
         List<SysBuoy> sysBuoys1 = buoyService.selectSysBuoyList(buoy1);
         objectObjectHashMap.put("fbgzcs", sysBuoys1);
         SysBuoy buoy2 = new SysBuoy();
         buoy2.setTypeStatus(2L);
+        startOrderBy();
         List<SysBuoy> sysBuoys2 = buoyService.selectSysBuoyList(buoy2);
         objectObjectHashMap.put("fbtxlj", sysBuoys2);
         return success(objectObjectHashMap);
@@ -83,11 +88,25 @@ public class SysBuoyController extends BaseController
      */
     @ApiOperation("获取浮标连接信息")
     @GetMapping("/get/buoy/connect/info")
-    public AjaxResult getBuoyConnectInfo(SysBuoy buoy)
+    public AjaxResult getBuoyConnectInfo(SysBuoyDto sysBuoyDto)
     {
+        SysBuoy buoy = new SysBuoy();
         buoy.setTypeStatus(2L);
+        startPage();
+        if (StrUtil.isNotBlank(sysBuoyDto.getDate())) {
+            String[] split = sysBuoyDto.getDate().split(",");
+            if (split.length > 0) {
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("beginTime", split[0]);
+                params.put("endTime", split[1]);
+                System.out.println(params);
+                buoy.setParams(params);
+            }
+        }
         List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
-        return success(sysBuoys);
+        TableDataInfo dataTable = getDataTable(sysBuoys);
+        System.out.println(dataTable);
+        return toAjax(dataTable);
     }
 
     /**
@@ -98,8 +117,22 @@ public class SysBuoyController extends BaseController
     public AjaxResult getBuoyJobStatus(SysBuoy buoy)
     {
         buoy.setTypeStatus(0L);
+        startPage();
+        startOrderBy();
+        if (buoy.getCreateTime() != null && StrUtil.isNotBlank(buoy.getCreateTime().toString())) {
+            String[] split =buoy.getCreateTime().toString().split(",");
+            if (split.length > 0) {
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("beginTime", split[0]);
+                params.put("endTime", split[1]);
+                System.out.println(params);
+                buoy.setParams(params);
+            }
+        }
         List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
-        return success(sysBuoys);
+        TableDataInfo dataTable = getDataTable(sysBuoys);
+        System.out.println(dataTable);
+        return toAjax(dataTable);
     }
 
     /**
@@ -107,11 +140,51 @@ public class SysBuoyController extends BaseController
      */
     @ApiOperation("获取浮标工作参数")
     @GetMapping("/get/buoy/job/param")
-    public AjaxResult getBuoyJobParam(SysBuoy buoy)
+    public AjaxResult getBuoyJobParam(SysBuoyDto sysBuoyDto)
     {
+        SysBuoy buoy = new SysBuoy();
         buoy.setTypeStatus(1L);
+        startPage();
+        if (StrUtil.isNotBlank(sysBuoyDto.getDate())) {
+            String[] split = sysBuoyDto.getDate().split(",");
+            if (split.length > 0) {
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("beginTime", split[0]);
+                params.put("endTime", split[1]);
+                System.out.println(params);
+                buoy.setParams(params);
+            }
+        }
         List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
-        return success(sysBuoys);
+        TableDataInfo dataTable = getDataTable(sysBuoys);
+        System.out.println(dataTable);
+        return toAjax(dataTable);
+    }
+
+    /**
+     * 水声通信机内容信息获取
+     */
+    @ApiOperation("水声通信机内容信息获取")
+    @GetMapping("/get/buoy/machine/info")
+    public AjaxResult getBuoyMachineInfo(SysBuoyMachine buoyMachine)
+    {
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+        SysBuoyMachine buoyMachine0 = new SysBuoyMachine();
+        buoyMachine0.setTypeStatus(0L);
+        startOrderBy();
+        List<SysBuoyMachine> sysBuoyMachines0 = buoyMachineService.selectSysBuoyMachineList(buoyMachine0);
+        objectObjectHashMap.put("sstxjgzzt", sysBuoyMachines0);
+        SysBuoyMachine buoyMachine1 = new SysBuoyMachine();
+        buoyMachine0.setTypeStatus(1L);
+        startOrderBy();
+        List<SysBuoyMachine> sysBuoyMachines1 = buoyMachineService.selectSysBuoyMachineList(buoyMachine1);
+        objectObjectHashMap.put("sstxjgzcs", sysBuoyMachines1);
+        SysBuoyMachine buoyMachine2 = new SysBuoyMachine();
+        buoyMachine0.setTypeStatus(2L);
+        startOrderBy();
+        List<SysBuoyMachine> sysBuoyMachines2 = buoyMachineService.selectSysBuoyMachineList(buoyMachine2);
+        objectObjectHashMap.put("sstxjtxlj", sysBuoyMachines2);
+        return success(objectObjectHashMap);
     }
 
 
@@ -183,86 +256,7 @@ public class SysBuoyController extends BaseController
         return success(menus);
     }
 
-    /**
-     * 水声通信机导入工作参数文件  远程控制指令发送并发送远程控制指令
-     */
-    @ApiOperation("水声通信机导入工作参数文件")
-    @PostMapping("/upload/machine/jobParam/send")
-    public AjaxResult sendMachineJobParam(@RequestParam("file") MultipartFile file) {
-        try {
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            File file1 = File.createTempFile("temp", null);
-            file.transferTo(file1);
-            Scanner scanner = new Scanner(file1);
 
-            SysCommunication sysCommunication = new SysCommunication();
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] split = line.split(";");
-                for (String s : split) {
-
-                    String[] splitStatus = s.split("&");
-                    String split0= splitStatus[0];
-                    String split1= splitStatus[1];
-                    String split2= splitStatus[2];
-                    sysCommunication.setModulationType(split0);
-                    sysCommunication.setSendGain(split1);
-                    sysCommunication.setReceiverGain(split2);
-                }
-                // 解析每一行文本的逻辑
-                System.out.println(line);
-            }
-            scanner.close();
-            String jsonString = JSON.toJSONString(sysCommunication);
-            String menus = buoyService.setMachineJobParam(jsonString, getUserId());
-            return success(menus);
-        } catch (Exception e) {
-            return error("上传失败: " + e.getMessage());
-        }
-    }
-    /**
-     * 水声通信机器导入工作状态文件
-     */
-    @ApiOperation("水声通信机器导入工作状态文件")
-    @PostMapping("/upload/machine/jobStatus/send")
-    public AjaxResult sendMachineJobStatus(@RequestParam("file") MultipartFile file) {
-        try {
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            File file1 = File.createTempFile("temp", null);
-            file.transferTo(file1);
-            Scanner scanner = new Scanner(file1);
-
-            SysCommunication sysCommunication = new SysCommunication();
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] split = line.split(";");
-                for (String s : split) {
-
-                    String[] splitStatus = s.split("&");
-                    String split0= splitStatus[0];
-                    String split1= splitStatus[1];
-                    String split2= splitStatus[2];
-                    sysCommunication.setModulationTypeSet(split0);
-                    sysCommunication.setSendGainSet(split1);
-                    sysCommunication.setReceiverGainSet(split2);
-                }
-                // 解析每一行文本的逻辑
-                System.out.println(line);
-            }
-            scanner.close();
-            String jsonString = JSON.toJSONString(sysCommunication);
-//            String menus = buoyService.setBuoyJobParam(jsonString, 1L);
-            return success(jsonString);
-        } catch (Exception e) {
-            return error("上传失败: " + e.getMessage());
-        }
-    }
 
     /**
      * 浮标工作参数远程控制指令接收  c-java端
@@ -274,7 +268,7 @@ public class SysBuoyController extends BaseController
 //        String fileName = l + "getBuoyJobParam.txt";
 //        // todo 写入文件与存储数据库处理
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,getUserId(),1L);
+        buoyService.saveBuoyInfo(test,null,1L);
         return success(test);
     }
 
@@ -289,7 +283,7 @@ public class SysBuoyController extends BaseController
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getBuoyJobStatusGetC.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,getUserId(),0L);
+        buoyService.saveBuoyInfo(test,null,0L);
         return success(test);
     }
 
@@ -300,12 +294,10 @@ public class SysBuoyController extends BaseController
     public AjaxResult getBuoyConnectStatusGetC(@RequestBody String test)
     {
         System.out.println(test);
-        long l = 1L;
-        String string = UUID.randomUUID().toString();
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getBuoyConnectStatusGetC.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,getUserId(),3L);
+        buoyService.saveBuoyInfo(test,null,2L);
         return success(test);
     }
 
@@ -316,8 +308,13 @@ public class SysBuoyController extends BaseController
     @RequestMapping("/connect/buoy/information/get/c")
     public AjaxResult getBuoyInformationForC(@RequestParam("file") MultipartFile file) throws IOException {
         System.out.println(file.getOriginalFilename());
-        buoyService.analyzeBuoyInformation(file,getUserId());
-        return success(1);
+        Path uploadPath = Paths.get(UPLOAD_DIR);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        String upload = FileUploadUtils.upload(UPLOAD_DIR, file);
+//        buoyService.analyzeBuoyInformation(file,null,upload);
+        return success(upload);
     }
 
 
@@ -332,7 +329,7 @@ public class SysBuoyController extends BaseController
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getMachineJobParam.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyMachineInfo(test,l,1L);
+        buoyService.saveBuoyMachineInfo(test,null,1L);
         return success(test);
     }
 
@@ -347,7 +344,7 @@ public class SysBuoyController extends BaseController
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getMachineConnectStatusGetC.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyMachineInfo(test,l,3L);
+        buoyService.saveBuoyMachineInfo(test,null,2L);
         return success(test);
     }
 
@@ -359,14 +356,14 @@ public class SysBuoyController extends BaseController
     {
         System.out.println(test);
         long l = 1L;
-        buoyService.saveBuoyRadioSensing(test,l);
+        buoyService.saveBuoyRadioSensing(test,null);
         return success(test);
     }
 
     /**
      * 水声通信机工作状态显示   c-java端
      */
-    @RequestMapping("/connect/machine/jobStatus/get")
+    @RequestMapping("/connect/machine/jobStatus/get/c")
     public AjaxResult getMachineJobStatus(@RequestBody String test)
     {
         System.out.println(test);
@@ -374,7 +371,7 @@ public class SysBuoyController extends BaseController
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getMachineJobStatus.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyMachineInfo(test,l,0L);
+        buoyService.saveBuoyMachineInfo(test,null,0L);
         return success(test);
     }
 
@@ -391,27 +388,6 @@ public class SysBuoyController extends BaseController
         SysBuoyInformation sysBuoyInformation = new SysBuoyInformation();
         List<SysBuoyInformation> sysBuoyInformations = buoyInformationService.selectSysBuoyInformationList(sysBuoyInformation);
         return success(sysBuoyInformations);
-    }
-
-    /**
-     * 浮标工作状态显示  web-java端  先试用getBuoyInfo获取全部浮标信息接口
-     */
-    @RequestMapping("/connect/buoy/jobStatus/get/web")
-    public AjaxResult getBuoyJobStatusGetWeb(@RequestBody String test)
-    {
-        System.out.println(test);
-        long l = 1L;
-        String fileName = l + "getBuoyJobStatus.txt";
-        try {
-            File absoluteFile = FileUploadUtils.getAbsoluteFile(UPLOAD_DIR, fileName);
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        // todo 需要从数据库读取对应数据进行返回页面展示
-
-        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        return success(test);
     }
 
     /**
@@ -529,6 +505,87 @@ public class SysBuoyController extends BaseController
             inputStream.close();
         }catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 水声通信机导入工作参数文件  远程控制指令发送并发送远程控制指令
+     */
+    @ApiOperation("水声通信机导入工作参数文件")
+    @PostMapping("/upload/machine/jobParam/send")
+    public AjaxResult sendMachineJobParam(@RequestParam("file") MultipartFile file) {
+        try {
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            File file1 = File.createTempFile("temp", null);
+            file.transferTo(file1);
+            Scanner scanner = new Scanner(file1);
+
+            SysCommunication sysCommunication = new SysCommunication();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] split = line.split(";");
+                for (String s : split) {
+
+                    String[] splitStatus = s.split("&");
+                    String split0= splitStatus[0];
+                    String split1= splitStatus[1];
+                    String split2= splitStatus[2];
+                    sysCommunication.setModulationType(split0);
+                    sysCommunication.setSendGain(split1);
+                    sysCommunication.setReceiverGain(split2);
+                }
+                // 解析每一行文本的逻辑
+                System.out.println(line);
+            }
+            scanner.close();
+            String jsonString = JSON.toJSONString(sysCommunication);
+            String menus = buoyService.setMachineJobParam(jsonString, getUserId());
+            return success(menus);
+        } catch (Exception e) {
+            return error("上传失败: " + e.getMessage());
+        }
+    }
+    /**
+     * 水声通信机器导入工作状态文件
+     */
+    @ApiOperation("水声通信机器导入工作状态文件")
+    @PostMapping("/upload/machine/jobStatus/send")
+    public AjaxResult sendMachineJobStatus(@RequestParam("file") MultipartFile file) {
+        try {
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            File file1 = File.createTempFile("temp", null);
+            file.transferTo(file1);
+            Scanner scanner = new Scanner(file1);
+
+            SysCommunication sysCommunication = new SysCommunication();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] split = line.split(";");
+                for (String s : split) {
+
+                    String[] splitStatus = s.split("&");
+                    String split0= splitStatus[0];
+                    String split1= splitStatus[1];
+                    String split2= splitStatus[2];
+                    sysCommunication.setModulationTypeSet(split0);
+                    sysCommunication.setSendGainSet(split1);
+                    sysCommunication.setReceiverGainSet(split2);
+                }
+                // 解析每一行文本的逻辑
+                System.out.println(line);
+            }
+            scanner.close();
+            String jsonString = JSON.toJSONString(sysCommunication);
+//            String menus = buoyService.setBuoyJobParam(jsonString, 1L);
+            return success(jsonString);
+        } catch (Exception e) {
+            return error("上传失败: " + e.getMessage());
         }
     }
 }

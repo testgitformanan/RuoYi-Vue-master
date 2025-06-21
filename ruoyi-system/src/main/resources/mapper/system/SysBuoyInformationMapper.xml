@@ -9,6 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="code"    column="code"    />
         <result property="content"    column="content"    />
         <result property="informationFileName"    column="information_file_name"    />
+        <result property="fileNumber"    column="file_number"    />
+        <result property="remark"    column="remark"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -16,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysBuoyInformationVo">
-        select id, code, content, information_file_name, create_by, create_time, update_by, update_time from sys_buoy_information
+        select id, code, content, information_file_name, file_number, remark, create_by, create_time, update_by, update_time from sys_buoy_information
     </sql>
 
     <select id="selectSysBuoyInformationList" parameterType="SysBuoyInformation" resultMap="SysBuoyInformationResult">
@@ -25,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="code != null  and code != ''"> and code = #{code}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="informationFileName != null  and informationFileName != ''"> and information_file_name like concat('%', #{informationFileName}, '%')</if>
+            <if test="fileNumber != null  and fileNumber != ''"> and file_number = #{fileNumber}</if>
         </where>
     </select>
     
@@ -39,6 +42,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="code != null">code,</if>
             <if test="content != null">content,</if>
             <if test="informationFileName != null">information_file_name,</if>
+            <if test="fileNumber != null">file_number,</if>
+            <if test="remark != null">remark,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
@@ -48,6 +53,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="code != null">#{code},</if>
             <if test="content != null">#{content},</if>
             <if test="informationFileName != null">#{informationFileName},</if>
+            <if test="fileNumber != null">#{fileNumber},</if>
+            <if test="remark != null">#{remark},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -61,6 +68,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="code != null">code = #{code},</if>
             <if test="content != null">content = #{content},</if>
             <if test="informationFileName != null">information_file_name = #{informationFileName},</if>
+            <if test="fileNumber != null">file_number = #{fileNumber},</if>
+            <if test="remark != null">remark = #{remark},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>

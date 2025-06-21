@@ -22,10 +22,10 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 浮标信号业务Controller
+ * 浮标信号数据业务Controller
  * 
  * @author ruoyi
- * @date 2025-06-17
+ * @date 2025-06-21
  */
 @RestController
 @RequestMapping("/system/information")
@@ -35,7 +35,7 @@ public class SysBuoyInformationController extends BaseController
     private ISysBuoyInformationService sysBuoyInformationService;
 
     /**
-     * 查询浮标信号业务列表
+     * 查询浮标信号数据业务列表
      */
     @PreAuthorize("@ss.hasPermi('system:information:list')")
     @GetMapping("/list")
@@ -47,20 +47,20 @@ public class SysBuoyInformationController extends BaseController
     }
 
     /**
-     * 导出浮标信号业务列表
+     * 导出浮标信号数据业务列表
      */
     @PreAuthorize("@ss.hasPermi('system:information:export')")
-    @Log(title = "浮标信号业务", businessType = BusinessType.EXPORT)
+    @Log(title = "浮标信号数据业务", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysBuoyInformation sysBuoyInformation)
     {
         List<SysBuoyInformation> list = sysBuoyInformationService.selectSysBuoyInformationList(sysBuoyInformation);
         ExcelUtil<SysBuoyInformation> util = new ExcelUtil<SysBuoyInformation>(SysBuoyInformation.class);
-        util.exportExcel(response, list, "浮标信号业务数据");
+        util.exportExcel(response, list, "浮标信号数据业务数据");
     }
 
     /**
-     * 获取浮标信号业务详细信息
+     * 获取浮标信号数据业务详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:information:query')")
     @GetMapping(value = "/{id}")
@@ -70,10 +70,10 @@ public class SysBuoyInformationController extends BaseController
     }
 
     /**
-     * 新增浮标信号业务
+     * 新增浮标信号数据业务
      */
     @PreAuthorize("@ss.hasPermi('system:information:add')")
-    @Log(title = "浮标信号业务", businessType = BusinessType.INSERT)
+    @Log(title = "浮标信号数据业务", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SysBuoyInformation sysBuoyInformation)
     {
@@ -81,10 +81,10 @@ public class SysBuoyInformationController extends BaseController
     }
 
     /**
-     * 修改浮标信号业务
+     * 修改浮标信号数据业务
      */
     @PreAuthorize("@ss.hasPermi('system:information:edit')")
-    @Log(title = "浮标信号业务", businessType = BusinessType.UPDATE)
+    @Log(title = "浮标信号数据业务", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysBuoyInformation sysBuoyInformation)
     {
@@ -92,10 +92,10 @@ public class SysBuoyInformationController extends BaseController
     }
 
     /**
-     * 删除浮标信号业务
+     * 删除浮标信号数据业务
      */
     @PreAuthorize("@ss.hasPermi('system:information:remove')")
-    @Log(title = "浮标信号业务", businessType = BusinessType.DELETE)
+    @Log(title = "浮标信号数据业务", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

@@ -85,6 +85,10 @@ public class SysBuoyDto  extends BaseEntity {
     @Excel(name = "浮标工作状态 运行中：1  待机中：0 ")
     private String buoyStatus;
 
+    /** 日期yyyy-MM-dd */
+    @Excel(name = "日期yyyy-MM-dd")
+    private String date;
+
     public void setId(Long id)
     {
         this.id = id;
@@ -265,7 +269,13 @@ public class SysBuoyDto  extends BaseEntity {
         return buoyStatus;
     }
 
+    public String getDate() {
+        return date;
+    }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {

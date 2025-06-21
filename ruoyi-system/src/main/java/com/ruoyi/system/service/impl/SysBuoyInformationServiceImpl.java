@@ -9,10 +9,10 @@ import com.ruoyi.system.domain.SysBuoyInformation;
 import com.ruoyi.system.service.ISysBuoyInformationService;
 
 /**
- * 浮标信号业务Service业务层处理
+ * 浮标信号数据业务Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-06-17
+ * @date 2025-06-21
  */
 @Service
 public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService 
@@ -21,10 +21,10 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     private SysBuoyInformationMapper sysBuoyInformationMapper;
 
     /**
-     * 查询浮标信号业务
+     * 查询浮标信号数据业务
      * 
-     * @param id 浮标信号业务主键
-     * @return 浮标信号业务
+     * @param id 浮标信号数据业务主键
+     * @return 浮标信号数据业务
      */
     @Override
     public SysBuoyInformation selectSysBuoyInformationById(Long id)
@@ -33,10 +33,10 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 查询浮标信号业务列表
+     * 查询浮标信号数据业务列表
      * 
-     * @param sysBuoyInformation 浮标信号业务
-     * @return 浮标信号业务
+     * @param sysBuoyInformation 浮标信号数据业务
+     * @return 浮标信号数据业务
      */
     @Override
     public List<SysBuoyInformation> selectSysBuoyInformationList(SysBuoyInformation sysBuoyInformation)
@@ -45,9 +45,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 新增浮标信号业务
+     * 新增浮标信号数据业务
      * 
-     * @param sysBuoyInformation 浮标信号业务
+     * @param sysBuoyInformation 浮标信号数据业务
      * @return 结果
      */
     @Override
@@ -58,9 +58,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 修改浮标信号业务
+     * 修改浮标信号数据业务
      * 
-     * @param sysBuoyInformation 浮标信号业务
+     * @param sysBuoyInformation 浮标信号数据业务
      * @return 结果
      */
     @Override
@@ -71,9 +71,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 批量删除浮标信号业务
+     * 批量删除浮标信号数据业务
      * 
-     * @param ids 需要删除的浮标信号业务主键
+     * @param ids 需要删除的浮标信号数据业务主键
      * @return 结果
      */
     @Override
@@ -83,9 +83,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 删除浮标信号业务信息
+     * 删除浮标信号数据业务信息
      * 
-     * @param id 浮标信号业务主键
+     * @param id 浮标信号数据业务主键
      * @return 结果
      */
     @Override
