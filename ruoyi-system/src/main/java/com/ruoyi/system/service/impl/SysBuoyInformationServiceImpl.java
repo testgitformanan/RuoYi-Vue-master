@@ -9,7 +9,7 @@ import com.ruoyi.system.domain.SysBuoyInformation;
 import com.ruoyi.system.service.ISysBuoyInformationService;
 
 /**
- * 浮标无线电感知业务Service业务层处理
+ * 浮标信号业务Service业务层处理
  * 
  * @author ruoyi
  * @date 2025-06-17
@@ -21,10 +21,10 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     private SysBuoyInformationMapper sysBuoyInformationMapper;
 
     /**
-     * 查询浮标无线电感知业务
+     * 查询浮标信号业务
      * 
-     * @param id 浮标无线电感知业务主键
-     * @return 浮标无线电感知业务
+     * @param id 浮标信号业务主键
+     * @return 浮标信号业务
      */
     @Override
     public SysBuoyInformation selectSysBuoyInformationById(Long id)
@@ -33,10 +33,10 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 查询浮标无线电感知业务列表
+     * 查询浮标信号业务列表
      * 
-     * @param sysBuoyInformation 浮标无线电感知业务
-     * @return 浮标无线电感知业务
+     * @param sysBuoyInformation 浮标信号业务
+     * @return 浮标信号业务
      */
     @Override
     public List<SysBuoyInformation> selectSysBuoyInformationList(SysBuoyInformation sysBuoyInformation)
@@ -45,9 +45,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 新增浮标无线电感知业务
+     * 新增浮标信号业务
      * 
-     * @param sysBuoyInformation 浮标无线电感知业务
+     * @param sysBuoyInformation 浮标信号业务
      * @return 结果
      */
     @Override
@@ -58,9 +58,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 修改浮标无线电感知业务
+     * 修改浮标信号业务
      * 
-     * @param sysBuoyInformation 浮标无线电感知业务
+     * @param sysBuoyInformation 浮标信号业务
      * @return 结果
      */
     @Override
@@ -71,9 +71,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 批量删除浮标无线电感知业务
+     * 批量删除浮标信号业务
      * 
-     * @param ids 需要删除的浮标无线电感知业务主键
+     * @param ids 需要删除的浮标信号业务主键
      * @return 结果
      */
     @Override
@@ -83,9 +83,9 @@ public class SysBuoyInformationServiceImpl implements ISysBuoyInformationService
     }
 
     /**
-     * 删除浮标无线电感知业务信息
+     * 删除浮标信号业务信息
      * 
-     * @param id 浮标无线电感知业务主键
+     * @param id 浮标信号业务主键
      * @return 结果
      */
     @Override

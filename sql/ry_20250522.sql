@@ -804,4 +804,4 @@ create_time 	    datetime                                   comment '创建时�
 update_by         varchar(64)     default ''                 comment '更新者',
 update_time       datetime                                   comment '更新时间',
 primary key (id)
-) engine=innodb auto_increment=1 comment = '浮标无线电感知业务表';
+) engine=innodb auto_increment=1 comment = '浮标信号数据业务表';

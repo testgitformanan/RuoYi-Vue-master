@@ -62,9 +62,32 @@ public class SysBuoyController extends BaseController
     @GetMapping("/getBuoyInfo")
     public AjaxResult getBuoyInfo(SysCommunication communication)
     {
-
-        SysBuoy menus = buoyService.getBuoyInfo(null, getUserId());
-        return success(menus);
+//        SysBuoy menus = buoyService.getBuoyInfo(null, getUserId());
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+        SysBuoy buoy = new SysBuoy();
+        buoy.setTypeStatus(0L);
+        List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
+        objectObjectHashMap.put("fbgzzt", sysBuoys);
+        SysBuoy buoy1 = new SysBuoy();
+        buoy1.setTypeStatus(1L);
+        List<SysBuoy> sysBuoys1 = buoyService.selectSysBuoyList(buoy1);
+        objectObjectHashMap.put("fbgzcs", sysBuoys1);
+        SysBuoy buoy2 = new SysBuoy();
+        buoy2.setTypeStatus(2L);
+        List<SysBuoy> sysBuoys2 = buoyService.selectSysBuoyList(buoy2);
+        objectObjectHashMap.put("fbtxlj", sysBuoys2);
+        return success(objectObjectHashMap);
+    }
+    /**
+     * 浮标连接信息获取
+     */
+    @ApiOperation("获取浮标连接信息")
+    @GetMapping("/get/buoy/connect/info")
+    public AjaxResult getBuoyConnectInfo(SysBuoy buoy)
+    {
+        buoy.setTypeStatus(2L);
+        List<SysBuoy> sysBuoys = buoyService.selectSysBuoyList(buoy);
+        return success(sysBuoys);
     }
 
     /**
@@ -123,7 +146,7 @@ public class SysBuoyController extends BaseController
     @RequestMapping("/connect")
     public AjaxResult connectBuoy(@RequestBody String param)
     {
-        String menus = buoyService.connectBuoy(param, 1L);
+        String menus = buoyService.connectBuoy(param, getUserId());
         return success(menus);
     }
 
@@ -134,7 +157,7 @@ public class SysBuoyController extends BaseController
     @PostMapping("/set/buoyJobParam")
     public AjaxResult setBuoyJobParam(@RequestBody String communication)
     {
-        String menus = buoyService.setBuoyJobParam(communication, 1L);
+        String menus = buoyService.setBuoyJobParam(communication, getUserId());
         return success(menus);
     }
 
@@ -145,7 +168,7 @@ public class SysBuoyController extends BaseController
     @RequestMapping("/connect/machine")
     public AjaxResult connectBuoyMachine(@RequestBody String param)
     {
-        String menus = buoyService.connectBuoyMachine(param, 1L);
+        String menus = buoyService.connectBuoyMachine(param, getUserId());
         return success(menus);
     }
     /**
@@ -156,7 +179,7 @@ public class SysBuoyController extends BaseController
     public AjaxResult setMachineJobParam(@RequestBody String communication)
     {
         System.out.println(communication);
-        String menus = buoyService.setMachineJobParam(communication, 1L);
+        String menus = buoyService.setMachineJobParam(communication, getUserId());
         return success(menus);
     }
 
@@ -194,7 +217,7 @@ public class SysBuoyController extends BaseController
             }
             scanner.close();
             String jsonString = JSON.toJSONString(sysCommunication);
-            String menus = buoyService.setMachineJobParam(jsonString, 1L);
+            String menus = buoyService.setMachineJobParam(jsonString, getUserId());
             return success(menus);
         } catch (Exception e) {
             return error("上传失败: " + e.getMessage());
@@ -251,7 +274,7 @@ public class SysBuoyController extends BaseController
 //        String fileName = l + "getBuoyJobParam.txt";
 //        // todo 写入文件与存储数据库处理
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,1L,1L);
+        buoyService.saveBuoyInfo(test,getUserId(),1L);
         return success(test);
     }
 
@@ -266,7 +289,7 @@ public class SysBuoyController extends BaseController
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getBuoyJobStatusGetC.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,1L,0L);
+        buoyService.saveBuoyInfo(test,getUserId(),0L);
         return success(test);
     }
 
@@ -282,7 +305,7 @@ public class SysBuoyController extends BaseController
         // todo 写入文件与存储数据库处理
 //        String fileName = l + "getBuoyConnectStatusGetC.txt";
 //        FileUtils.WriteTxtFile(test,UPLOAD_DIR,fileName);
-        buoyService.saveBuoyInfo(test,1L,3L);
+        buoyService.saveBuoyInfo(test,getUserId(),3L);
         return success(test);
     }
 
@@ -293,7 +316,7 @@ public class SysBuoyController extends BaseController
     @RequestMapping("/connect/buoy/information/get/c")
     public AjaxResult getBuoyInformationForC(@RequestParam("file") MultipartFile file) throws IOException {
         System.out.println(file.getOriginalFilename());
-        buoyService.analyzeBuoyInformation(file,1L);
+        buoyService.analyzeBuoyInformation(file,getUserId());
         return success(1);
     }
 
@@ -397,7 +420,7 @@ public class SysBuoyController extends BaseController
     @ApiOperation("浮标导入工作状态文件")
     @PostMapping("/upload/buoy/jobStatus/send")
     public AjaxResult sendBuoyJobStatus(@RequestParam("file") MultipartFile file) {
-        SysBuoyDto sysBuoyDto = buoyService.sendBuoyJobStatus(file, 1L);
+        SysBuoyDto sysBuoyDto = buoyService.sendBuoyJobStatus(file, getUserId());
         return success(sysBuoyDto);
     }
 
@@ -408,7 +431,7 @@ public class SysBuoyController extends BaseController
     @PostMapping("/upload/buoy/jobParam/send")
     public AjaxResult sendBuoyJobParamSend(@RequestParam("file") MultipartFile file) {
 
-        String menus = buoyService.sendBuoyJobParam(file, 1L);
+        String menus = buoyService.sendBuoyJobParam(file, getUserId());
         if(menus!= null){
             return success(menus);
         }
@@ -422,7 +445,7 @@ public class SysBuoyController extends BaseController
     @RequestMapping("/upload/buoy/information/get/web")
     public AjaxResult uploadBuoyInformationForWeb(@RequestParam("file") MultipartFile file)
     {
-        String s = buoyService.uploadBuoyInformation(file, 1L);
+        String s = buoyService.uploadBuoyInformation(file, getUserId());
         return success(s);
     }
 
@@ -433,7 +456,7 @@ public class SysBuoyController extends BaseController
     @RequestMapping("/connect/buoy/information/file/number/get/web")
     public AjaxResult connectBuoyInformationFileNumberForWeb(@RequestBody String fileNumber)
     {
-        String s = buoyService.connectBuoyInformationFileNumberForWeb(fileNumber, 1L);
+        String s = buoyService.connectBuoyInformationFileNumberForWeb(fileNumber, getUserId());
         return success(s);
     }
 
@@ -444,7 +467,7 @@ public class SysBuoyController extends BaseController
     @PostMapping("/upload/buoy/jobParam/get")
     public AjaxResult sendBuoyJobParam(@RequestParam("file") MultipartFile file) {
 
-        String menus = buoyService.analyzeBuoyJobParam(file, 1L);
+        String menus = buoyService.analyzeBuoyJobParam(file, getUserId());
         if(menus!= null){
             return success(menus);
         }
