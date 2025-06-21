@@ -9,6 +9,7 @@ import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
@@ -26,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,19 +48,11 @@ public class WxgzGzcspzController extends BaseController {
      * 查询无线感知工作参数配置列表
      */
     @GetMapping("/list")
-    public AjaxResult list(WxgzGzcspz wxgzGzcspz) {
-        if (StrUtil.isNotBlank(wxgzGzcspz.getDate())) {
-            String[] split = wxgzGzcspz.getDate().split(",");
-            if (split.length > 0) {
-                HashMap<String, Object> params = new HashMap<>();
-                params.put("beginTime", split[0]);
-                params.put("endTime", split[1]);
-                wxgzGzcspz.setParams(params);
-                wxgzGzcspz.setDate(null);
-            }
-        }
+    public TableDataInfo list(WxgzGzcspz wxgzGzcspz) {
+        logger.info("前端无线感知显示请求：{}", JSONUtil.toJsonStr(wxgzGzcspz));
+        startPage();
         List<WxgzGzcspz> list = wxgzGzcspzService.selectWxgzGzcspzList(wxgzGzcspz);
-        return toAjax(list);
+        return getDataTable(list);
     }
 
     /**
@@ -75,9 +67,9 @@ public class WxgzGzcspzController extends BaseController {
         JSONObject obj = JSONUtil.createObj();
         obj.putOpt("id", wxgzGzcspz.getId());
         obj.putOpt("hz", wxgzGzcspz.getHz());
-        obj.putOpt("speed", wxgzGzcspz.getHz());
-        obj.putOpt("height", wxgzGzcspz.getHz());
-        obj.putOpt("mode", wxgzGzcspz.getHz());
+        obj.putOpt("speed", wxgzGzcspz.getSpeed());
+        obj.putOpt("height", wxgzGzcspz.getHeight());
+        obj.putOpt("mode", wxgzGzcspz.getMode());
         String postJson = HttpUtils.sendPostJson(url + "/wxgz/gzcspz/yckzzl", obj.toString());
         // success!
         logger.info("工作参数配置C返回数据：{}", postJson);

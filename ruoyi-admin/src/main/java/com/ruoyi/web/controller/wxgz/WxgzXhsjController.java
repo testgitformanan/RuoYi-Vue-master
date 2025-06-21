@@ -1,10 +1,11 @@
 package com.ruoyi.web.controller.wxgz;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.wxgz.domain.WxgzXhsj;
@@ -14,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,19 +35,11 @@ public class WxgzXhsjController extends BaseController {
      * 查询信号数据列表
      */
     @GetMapping("/list")
-    public AjaxResult list(WxgzXhsj wxgzXhsj) {
-        if (StrUtil.isNotBlank(wxgzXhsj.getDate())) {
-            String[] split = wxgzXhsj.getDate().split(",");
-            if (split.length > 0) {
-                HashMap<String, Object> params = new HashMap<>();
-                params.put("beginTime", split[0]);
-                params.put("endTime", split[1]);
-                wxgzXhsj.setParams(params);
-                wxgzXhsj.setDate(null);
-            }
-        }
+    public TableDataInfo list(WxgzXhsj wxgzXhsj) {
+        logger.info("前端信号数据显示请求：{}", JSONUtil.toJsonStr(wxgzXhsj));
+        startPage();
         List<WxgzXhsj> list = wxgzXhsjService.selectWxgzXhsjList(wxgzXhsj);
-        return toAjax(list);
+        return getDataTable(list);
     }
 
     /**

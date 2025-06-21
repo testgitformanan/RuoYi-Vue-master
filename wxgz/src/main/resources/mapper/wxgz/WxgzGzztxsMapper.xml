@@ -37,6 +37,7 @@
                 AND date &lt;= #{params.endTime}
             </if>
         </where>
+        order by id desc
     </select>
 
     <select id="selectWxgzGzztxsById" parameterType="Long" resultMap="WxgzGzztxsResult">
