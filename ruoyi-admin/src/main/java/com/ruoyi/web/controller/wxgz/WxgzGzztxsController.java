@@ -1,6 +1,5 @@
 package com.ruoyi.web.controller.wxgz;
 
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.annotation.Log;
@@ -56,20 +55,17 @@ public class WxgzGzztxsController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody String param) {
         logger.info("工作状态显示进来了:{}", param);
-        JSONObject obj = JSONUtil.parseObj(param);
-        /*obj.forEach((k, v) -> {
-            int type = GzztxsType.getTypeByName(k);
-            if (type != 0) {
-                String statusName = GzztxsStatus.getNameByStatus(Convert.toStr(v));
-                WxgzGzztxs wxgzGzztxs = new WxgzGzztxs();
-                wxgzGzztxs.setType(Convert.toLong(type));
-                wxgzGzztxs.setStatus(statusName);
-                wxgzGzztxsService.insertWxgzGzztxs(wxgzGzztxs);
-            }
-        });*/
         return toAjax(wxgzGzztxsService.insertWxgzGzztxs(new WxgzGzztxs() {{
-            setContent(obj.getJSONObject("消息体").toString());
+            setContent(param);
         }}));
+    }
+
+    /**
+     * 获取工作状态显示详细信息
+     */
+    @GetMapping(value = "/orderByIdDesc")
+    public AjaxResult getInfo() {
+        return success(wxgzGzztxsService.selectWxgzGzztxsOrderByIdDesc());
     }
 
     /**
@@ -81,15 +77,6 @@ public class WxgzGzztxsController extends BaseController {
         List<WxgzGzztxs> list = wxgzGzztxsService.selectWxgzGzztxsList(wxgzGzztxs);
         ExcelUtil<WxgzGzztxs> util = new ExcelUtil<WxgzGzztxs>(WxgzGzztxs.class);
         util.exportExcel(response, list, "工作状态显示数据");
-    }
-
-    /**
-     * 获取工作状态显示详细信息
-     */
-    @PreAuthorize("@ss.hasPermi('wxgz:gzztxs:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id) {
-        return success(wxgzGzztxsService.selectWxgzGzztxsById(id));
     }
 
     /**

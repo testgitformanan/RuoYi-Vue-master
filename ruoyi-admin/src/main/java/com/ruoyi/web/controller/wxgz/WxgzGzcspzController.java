@@ -1,6 +1,5 @@
 package com.ruoyi.web.controller.wxgz;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.ruoyi.common.annotation.Anonymous;
@@ -11,7 +10,6 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
@@ -73,10 +71,10 @@ public class WxgzGzcspzController extends BaseController {
         String postJson = HttpUtils.sendPostJson(url + "/wxgz/gzcspz/yckzzl", obj.toString());
         // success!
         logger.info("工作参数配置C返回数据：{}", postJson);
-        if (!StrUtil.equals(postJson, "success!")) {
+        /*if (!StrUtil.equals(postJson, "success!")) {
             wxgzGzcspzService.deleteWxgzGzcspzById(wxgzGzcspz.getId());
             throw new ServiceException("C端接口返回失败" + postJson);
-        }
+        }*/
         //数据保存到文件中
         /*if (rows > 0) {
             String fileName = RuoYiConfig.getProfile() + "/" + DateUtils.getNowYmd() + ".txt";
@@ -116,7 +114,9 @@ public class WxgzGzcspzController extends BaseController {
         WxgzGzcspz gzcspz = new WxgzGzcspz();
         gzcspz.setId(obj.getLong("id"));
         gzcspz.setContent(obj.getStr("data"));
-        return toAjax(wxgzGzcspzService.updateWxgzGzcspz(gzcspz));
+        int rows = wxgzGzcspzService.updateWxgzGzcspz(gzcspz);
+        logger.info("无线感知工作参数配置新增返回C：{}", rows);
+        return toAjax(rows);
     }
 
     /**

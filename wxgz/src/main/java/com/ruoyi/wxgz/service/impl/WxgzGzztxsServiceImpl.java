@@ -23,12 +23,11 @@ public class WxgzGzztxsServiceImpl implements IWxgzGzztxsService {
     /**
      * 查询工作状态显示
      *
-     * @param id 工作状态显示主键
      * @return 工作状态显示
      */
     @Override
-    public WxgzGzztxs selectWxgzGzztxsById(Long id) {
-        return wxgzGzztxsMapper.selectWxgzGzztxsById(id);
+    public WxgzGzztxs selectWxgzGzztxsOrderByIdDesc() {
+        return wxgzGzztxsMapper.selectWxgzGzztxsOrderByIdDesc();
     }
 
     /**

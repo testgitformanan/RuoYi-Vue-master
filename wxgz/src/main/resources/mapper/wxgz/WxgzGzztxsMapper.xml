@@ -40,9 +40,9 @@
         order by id desc
     </select>
 
-    <select id="selectWxgzGzztxsById" parameterType="Long" resultMap="WxgzGzztxsResult">
+    <select id="selectWxgzGzztxsOrderByIdDesc" resultMap="WxgzGzztxsResult">
         <include refid="selectWxgzGzztxsVo"/>
-        where id = #{id}
+        order by id desc limit 1
     </select>
 
     <insert id="insertWxgzGzztxs" parameterType="WxgzGzztxs" useGeneratedKeys="true" keyProperty="id">
