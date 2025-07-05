@@ -313,7 +313,7 @@ public class SysBuoyController extends BaseController
             Files.createDirectories(uploadPath);
         }
         String upload = FileUploadUtils.upload(UPLOAD_DIR, file);
-//        buoyService.analyzeBuoyInformation(file,null,upload);
+        buoyService.analyzeBuoyInformation(file,null,upload);
         return success(upload);
     }
 

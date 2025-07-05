@@ -80,14 +80,6 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     {
         JSONObject jsonObject = JSONObject.parseObject(param);
         jsonObject.put("userId", userId);
-//        Integer port = jsonObject.get("port")==null?null:(Integer)jsonObject.get("port");
-//        String baudRate = jsonObject.get("baudRate")==null?null:(String)jsonObject.get("baudRate");
-//        String modulationTypeSet = jsonObject.get("modulationTypeSet")==null?null:(String)jsonObject.get("modulationTypeSet");
-//        String sendGainSet = jsonObject.get("sendGainSet")==null?null:(String)jsonObject.get("sendGainSet");
-//        String receiverGainSet = jsonObject.get("receiverGainSet")==null?null:(String)jsonObject.get("receiverGainSet");
-//        System.out.println("port:"+port+"baudRate:"+baudRate);
-//        SysCommunication communication = new SysCommunication();
-//        System.out.println(communication);
 
         // 启动与关闭连接
         String apiUrl = fbtxljPath;
@@ -97,13 +89,6 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         headers.put("Authorization", "Bearer your_access_token");
         String postResponse = "";
         try {
-//            communication.setPort(port);
-//            communication.setBaudRate(baudRate);
-//            communication.setModulationTypeSet(modulationTypeSet);
-//            communication.setSendGainSet(sendGainSet);
-//            communication.setReceiverGainSet(receiverGainSet);
-//            System.out.println(jsonString);
-//            String postResponse = sendPostRequest(apiUrl, headers, jsonString);
             String jsonString = JSON.toJSONString(jsonObject);
             postResponse = sendPostRequest(apiUrl, headers, jsonString);
             saveBuoyInfo(param, userId,2L);
@@ -124,15 +109,6 @@ public class SysBuoyServiceImpl implements ISysBuoyService
     @Override
     public String connectBuoyMachine(String param, Long userId)
     {
-//        JSONObject jsonObject = JSONObject.parseObject(param);
-//        Integer port = jsonObject.get("port")==null?null:(Integer)jsonObject.get("port");
-//        String baudRate = jsonObject.get("baudRate")==null?null:(String)jsonObject.get("baudRate");
-//        String modulationTypeSet = jsonObject.get("modulationTypeSet")==null?null:(String)jsonObject.get("modulationTypeSet");
-//        String sendGainSet = jsonObject.get("sendGainSet")==null?null:(String)jsonObject.get("sendGainSet");
-//        String receiverGainSet = jsonObject.get("receiverGainSet")==null?null:(String)jsonObject.get("receiverGainSet");
-//        System.out.println("port:"+port+"baudRate:"+baudRate);
-//        SysCommunication communication = new SysCommunication();
-//        System.out.println(communication);
 
         // 启动与关闭连接
         String apiUrl = machinetxljPath;
@@ -142,14 +118,6 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         headers.put("Authorization", "Bearer your_access_token");
         String postResponse = "";
         try {
-//            communication.setPort(port);
-//            communication.setBaudRate(baudRate);
-//            communication.setModulationTypeSet(modulationTypeSet);
-//            communication.setSendGainSet(sendGainSet);
-//            communication.setReceiverGainSet(receiverGainSet);
-//            String jsonString = JSON.toJSONString(communication);
-//            System.out.println(jsonString);
-//            String postResponse = sendPostRequest(apiUrl, headers, jsonString);
             JSONObject jsonObject = JSONObject.parseObject(param);
             jsonObject.put("userId", userId);
             String jsonString = JSON.toJSONString(jsonObject);
@@ -501,11 +469,11 @@ public class SysBuoyServiceImpl implements ISysBuoyService
                 sysBuoyInformation.setContent(line);
             }
             scanner.close();
-            String jsonString = JSON.toJSONString(sysBuoyInformation);
             sysBuoyInformation.setInformationFileName(fileName);
             if(sysBuoyInformation.getContent()==null){
                 sysBuoyInformation.setContent(file.getOriginalFilename());
             }
+            String jsonString = JSON.toJSONString(sysBuoyInformation);
             sysBuoyInformationMapper.insertSysBuoyInformation(sysBuoyInformation);
             return jsonString;
         } catch (Exception e) {
