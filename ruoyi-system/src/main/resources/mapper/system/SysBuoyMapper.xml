@@ -16,6 +16,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="gainJobParam"    column="gain_job_param"    />
         <result property="sendControl"    column="send_control"    />
         <result property="receiverControl"    column="receiver_control"    />
+        <result property="workHours"    column="work_hours"    />
+        <result property="buoyType"    column="buoy_type"    />
+        <result property="communicationMethod"    column="communication_method"    />
+        <result property="upwardFrequency"    column="upward_frequency"    />
+        <result property="downFrequency"    column="down_frequency"    />
+        <result property="upwardPower"    column="upward_power"    />
+        <result property="downPower"    column="down_power"    />
+        <result property="upwardStandard"    column="upward_standard"    />
+        <result property="downStandard"    column="down_standard"    />
         <result property="jobStatusFileName"    column="job_status_file_name"    />
         <result property="jobParamSendControlFileName"    column="job_param_send_control_file_name"    />
         <result property="jobParamReceiverControlFileName"    column="job_param_receiver_control_file_name"    />
@@ -31,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysBuoyVo">
-        select id, code, job_status, communication_frequency_job_status, modulation_type_job_status, communication_system_job_status, communication_frequency_job_param, modulation_type_job_param, gain_job_param, send_control, receiver_control, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, type_status, buoy_start_or_stop, buoy_start_or_stop_status_back, buoy_status, remark, create_by, create_time, update_by, update_time from sys_buoy
+        select id, code, job_status, communication_frequency_job_status, modulation_type_job_status, communication_system_job_status, communication_frequency_job_param, modulation_type_job_param, gain_job_param, send_control, receiver_control, work_hours, buoy_type, communication_method, upward_frequency, down_frequency, upward_power, down_power, upward_standard, down_standard, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, type_status, buoy_start_or_stop, buoy_start_or_stop_status_back, buoy_status, remark, create_by, create_time, update_by, update_time from sys_buoy
     </sql>
 
     <select id="selectSysBuoyList" parameterType="SysBuoy" resultMap="SysBuoyResult">
@@ -47,6 +56,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null  and gainJobParam != ''"> and gain_job_param = #{gainJobParam}</if>
             <if test="sendControl != null  and sendControl != ''"> and send_control = #{sendControl}</if>
             <if test="receiverControl != null  and receiverControl != ''"> and receiver_control = #{receiverControl}</if>
+            <if test="workHours != null  and workHours != ''"> and work_hours = #{workHours}</if>
+            <if test="buoyType != null  and buoyType != ''"> and buoy_type = #{buoyType}</if>
+            <if test="communicationMethod != null  and communicationMethod != ''"> and communication_method = #{communicationMethod}</if>
+            <if test="upwardFrequency != null  and upwardFrequency != ''"> and upward_frequency = #{upwardFrequency}</if>
+            <if test="downFrequency != null  and downFrequency != ''"> and down_frequency = #{downFrequency}</if>
+            <if test="upwardPower != null  and upwardPower != ''"> and upward_power = #{upwardPower}</if>
+            <if test="downPower != null  and downPower != ''"> and down_power = #{downPower}</if>
+            <if test="upwardStandard != null  and upwardStandard != ''"> and upward_standard = #{upwardStandard}</if>
+            <if test="downStandard != null  and downStandard != ''"> and down_standard = #{downStandard}</if>
             <if test="jobStatusFileName != null  and jobStatusFileName != ''"> and job_status_file_name like concat('%', #{jobStatusFileName}, '%')</if>
             <if test="jobParamSendControlFileName != null  and jobParamSendControlFileName != ''"> and job_param_send_control_file_name like concat('%', #{jobParamSendControlFileName}, '%')</if>
             <if test="jobParamReceiverControlFileName != null  and jobParamReceiverControlFileName != ''"> and job_param_receiver_control_file_name like concat('%', #{jobParamReceiverControlFileName}, '%')</if>
@@ -75,6 +93,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null">gain_job_param,</if>
             <if test="sendControl != null">send_control,</if>
             <if test="receiverControl != null">receiver_control,</if>
+            <if test="workHours != null">work_hours,</if>
+            <if test="buoyType != null">buoy_type,</if>
+            <if test="communicationMethod != null">communication_method,</if>
+            <if test="upwardFrequency != null">upward_frequency,</if>
+            <if test="downFrequency != null">down_frequency,</if>
+            <if test="upwardPower != null">upward_power,</if>
+            <if test="downPower != null">down_power,</if>
+            <if test="upwardStandard != null">upward_standard,</if>
+            <if test="downStandard != null">down_standard,</if>
             <if test="jobStatusFileName != null">job_status_file_name,</if>
             <if test="jobParamSendControlFileName != null">job_param_send_control_file_name,</if>
             <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name,</if>
@@ -99,6 +126,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null">#{gainJobParam},</if>
             <if test="sendControl != null">#{sendControl},</if>
             <if test="receiverControl != null">#{receiverControl},</if>
+            <if test="workHours != null">#{workHours},</if>
+            <if test="buoyType != null">#{buoyType},</if>
+            <if test="communicationMethod != null">#{communicationMethod},</if>
+            <if test="upwardFrequency != null">#{upwardFrequency},</if>
+            <if test="downFrequency != null">#{downFrequency},</if>
+            <if test="upwardPower != null">#{upwardPower},</if>
+            <if test="downPower != null">#{downPower},</if>
+            <if test="upwardStandard != null">#{upwardStandard},</if>
+            <if test="downStandard != null">#{downStandard},</if>
             <if test="jobStatusFileName != null">#{jobStatusFileName},</if>
             <if test="jobParamSendControlFileName != null">#{jobParamSendControlFileName},</if>
             <if test="jobParamReceiverControlFileName != null">#{jobParamReceiverControlFileName},</if>
@@ -127,6 +163,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gainJobParam != null">gain_job_param = #{gainJobParam},</if>
             <if test="sendControl != null">send_control = #{sendControl},</if>
             <if test="receiverControl != null">receiver_control = #{receiverControl},</if>
+            <if test="workHours != null">work_hours = #{workHours},</if>
+            <if test="buoyType != null">buoy_type = #{buoyType},</if>
+            <if test="communicationMethod != null">communication_method = #{communicationMethod},</if>
+            <if test="upwardFrequency != null">upward_frequency = #{upwardFrequency},</if>
+            <if test="downFrequency != null">down_frequency = #{downFrequency},</if>
+            <if test="upwardPower != null">upward_power = #{upwardPower},</if>
+            <if test="downPower != null">down_power = #{downPower},</if>
+            <if test="upwardStandard != null">upward_standard = #{upwardStandard},</if>
+            <if test="downStandard != null">down_standard = #{downStandard},</if>
             <if test="jobStatusFileName != null">job_status_file_name = #{jobStatusFileName},</if>
             <if test="jobParamSendControlFileName != null">job_param_send_control_file_name = #{jobParamSendControlFileName},</if>
             <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name = #{jobParamReceiverControlFileName},</if>

@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.TreeSelect;
@@ -501,7 +502,9 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         }
 //        sysBuoy.setCreateBy(String.valueOf(userId));
         sysBuoy.setTypeStatus(typeStatus);
-        sysBuoy.setCode(code);
+        if(typeStatus!=0){
+            sysBuoy.setCode(code);
+        }
         List<SysBuoy> sysBuoyList = sysBuoyMapper.selectSysBuoyList(sysBuoy);
         String communicationFrequencyJobParam = jsonObject.get("communicationFrequencyJobParam")==null?null:(String)jsonObject.get("communicationFrequencyJobParam");
         String modulationTypeJobParam = jsonObject.get("modulationTypeJobParam")==null?null:(String)jsonObject.get("modulationTypeJobParam");
@@ -514,6 +517,15 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String buoyStartOrStop = jsonObject.get("buoyStartOrStop")==null?null:(String)jsonObject.get("buoyStartOrStop");
         String buoyStartOrStopStatusBack = jsonObject.get("buoyStartOrStopStatusBack")==null?null:(String)jsonObject.get("buoyStartOrStopStatusBack");
         String buoyStatus = jsonObject.get("buoyStatus")==null?null:(String)jsonObject.get("buoyStatus");
+        String workHours = jsonObject.get("workHours")==null?null:(String)jsonObject.get("workHours");
+        String buoyType = jsonObject.get("buoyType")==null?null:(String)jsonObject.get("buoyType");
+        String communicationMethod = jsonObject.get("communicationMethod")==null?null:(String)jsonObject.get("communicationMethod");
+        String upwardFrequency = jsonObject.get("upwardFrequency")==null?null:(String)jsonObject.get("upwardFrequency");
+        String downFrequency = jsonObject.get("downFrequency")==null?null:(String)jsonObject.get("downFrequency");
+        String upwardPower = jsonObject.get("upwardPower")==null?null:(String)jsonObject.get("upwardPower");
+        String downPower = jsonObject.get("workHours")==null?null:(String)jsonObject.get("downPower");
+        String upwardStandard = jsonObject.get("upwardStandard")==null?null:(String)jsonObject.get("upwardStandard");
+        String downStandard = jsonObject.get("downStandard")==null?null:(String)jsonObject.get("downStandard");
         sysBuoy.setCommunicationFrequencyJobStatus(communicationFrequencyJobStatus);
         sysBuoy.setModulationTypeJobStatus(modulationTypeJobStatus);
         sysBuoy.setCommunicationSystemJobStatus(communicationSystemJobStatus);
@@ -528,6 +540,15 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         sysBuoy.setBuoyStartOrStop(buoyStartOrStop);
         sysBuoy.setBuoyStartOrStopStatusBack(buoyStartOrStopStatusBack);
         sysBuoy.setBuoyStatus(buoyStatus);
+        sysBuoy.setWorkHours(workHours);
+        sysBuoy.setBuoyType(buoyType);
+        sysBuoy.setCommunicationMethod(communicationMethod);
+        sysBuoy.setUpwardFrequency(upwardFrequency);
+        sysBuoy.setDownFrequency(downFrequency);
+        sysBuoy.setUpwardPower(upwardPower);
+        sysBuoy.setDownPower(downPower);
+        sysBuoy.setUpwardStandard(upwardStandard);
+        sysBuoy.setDownStandard(downStandard);
         if(sysBuoyList == null || sysBuoyList.isEmpty()){
 //            sysBuoy.setId(userId);
             sysBuoyMapper.insertSysBuoy(sysBuoy);
@@ -558,6 +579,9 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         }
 //        sysBuoyMachine.setCreateBy(String.valueOf(userId));
         sysBuoyMachine.setTypeStatus(typeStatus);
+        if(typeStatus!=0){
+            sysBuoyMachine.setCode(code);
+        }
         sysBuoyMachine.setCode(code);
         List<SysBuoyMachine> selectSysBuoyMachineList = sysBuoyMachineMapper.selectSysBuoyMachineList(sysBuoyMachine);
         String port = jsonObject.get("port")==null?null:(String)jsonObject.get("port");

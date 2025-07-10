@@ -57,6 +57,43 @@ public class SysBuoyDto  extends BaseEntity {
     @Excel(name = "接收指令")
     private String receiverControl;
 
+    /** 工作时长 持续工作/1小时/2小时0x00  持续工作  0x01 工作1小时   0x02工作两小时 */
+    @Excel(name = "工作时长 持续工作/1小时/2小时0x00  持续工作  0x01 工作1小时   0x02工作两小时")
+    private String workHours;
+
+    /** 浮标类型 A型浮标/b型浮标0x00  A型浮标  0x01 B型浮标 */
+    @Excel(name = "浮标类型 A型浮标/b型浮标0x00  A型浮标  0x01 B型浮标")
+    private String buoyType;
+
+    /** 通讯方式 0x00  超短波   0x01 公开体制   0x02 模拟铱星 */
+    @Excel(name = "通讯方式 0x00  超短波   0x01 公开体制   0x02 模拟铱星")
+    private String communicationMethod;
+
+    /** 上行频率 */
+    @Excel(name = "上行频率")
+    private String upwardFrequency;
+
+    /** 下行频率 */
+    @Excel(name = "下行频率")
+    private String downFrequency;
+
+    /** 上行功率 */
+    @Excel(name = "上行功率")
+    private String upwardPower;
+
+    /** 下行功率 */
+    @Excel(name = "下行功率")
+    private String downPower;
+
+    /** 上行制式 */
+    @Excel(name = "上行制式")
+    private String upwardStandard;
+
+    /** 下行制式 */
+    @Excel(name = "下行制式")
+    private String downStandard;
+
+
     /** 工作状态-文件名称 */
     @Excel(name = "工作状态-文件名称")
     private String jobStatusFileName;
@@ -275,6 +312,78 @@ public class SysBuoyDto  extends BaseEntity {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getWorkHours() {
+        return workHours;
+    }
+
+    public void setWorkHours(String workHours) {
+        this.workHours = workHours;
+    }
+
+    public String getBuoyType() {
+        return buoyType;
+    }
+
+    public void setBuoyType(String buoyType) {
+        this.buoyType = buoyType;
+    }
+
+    public String getCommunicationMethod() {
+        return communicationMethod;
+    }
+
+    public void setCommunicationMethod(String communicationMethod) {
+        this.communicationMethod = communicationMethod;
+    }
+
+    public String getUpwardFrequency() {
+        return upwardFrequency;
+    }
+
+    public void setUpwardFrequency(String upwardFrequency) {
+        this.upwardFrequency = upwardFrequency;
+    }
+
+    public String getDownFrequency() {
+        return downFrequency;
+    }
+
+    public void setDownFrequency(String downFrequency) {
+        this.downFrequency = downFrequency;
+    }
+
+    public String getUpwardPower() {
+        return upwardPower;
+    }
+
+    public void setUpwardPower(String upwardPower) {
+        this.upwardPower = upwardPower;
+    }
+
+    public String getDownPower() {
+        return downPower;
+    }
+
+    public void setDownPower(String downPower) {
+        this.downPower = downPower;
+    }
+
+    public String getUpwardStandard() {
+        return upwardStandard;
+    }
+
+    public void setUpwardStandard(String upwardStandard) {
+        this.upwardStandard = upwardStandard;
+    }
+
+    public String getDownStandard() {
+        return downStandard;
+    }
+
+    public void setDownStandard(String downStandard) {
+        this.downStandard = downStandard;
     }
 
     @Override
