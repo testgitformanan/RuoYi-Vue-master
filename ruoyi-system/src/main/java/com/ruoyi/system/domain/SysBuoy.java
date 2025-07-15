@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 浮标对象 sys_buoy
  * 
  * @author ruoyi
- * @date 2025-07-08
+ * @date 2025-07-15
  */
 public class SysBuoy extends BaseEntity
 {
@@ -93,6 +93,14 @@ public class SysBuoy extends BaseEntity
     /** 下行制式 */
     @Excel(name = "下行制式")
     private String downStandard;
+
+    /** 上传文件类型1上传bin文件2上传wav文件0不设置 */
+    @Excel(name = "上传文件类型1上传bin文件2上传wav文件0不设置")
+    private String uploadFileType;
+
+    /** 模拟自毁 1是0否 */
+    @Excel(name = "模拟自毁 1是0否")
+    private String isDestroy;
 
     /** 工作状态-文件名称 */
     @Excel(name = "工作状态-文件名称")
@@ -322,6 +330,26 @@ public class SysBuoy extends BaseEntity
         return downStandard;
     }
 
+    public void setUploadFileType(String uploadFileType) 
+    {
+        this.uploadFileType = uploadFileType;
+    }
+
+    public String getUploadFileType() 
+    {
+        return uploadFileType;
+    }
+
+    public void setIsDestroy(String isDestroy) 
+    {
+        this.isDestroy = isDestroy;
+    }
+
+    public String getIsDestroy() 
+    {
+        return isDestroy;
+    }
+
     public void setJobStatusFileName(String jobStatusFileName) 
     {
         this.jobStatusFileName = jobStatusFileName;
@@ -415,6 +443,8 @@ public class SysBuoy extends BaseEntity
             .append("downPower", getDownPower())
             .append("upwardStandard", getUpwardStandard())
             .append("downStandard", getDownStandard())
+            .append("uploadFileType", getUploadFileType())
+            .append("isDestroy", getIsDestroy())
             .append("jobStatusFileName", getJobStatusFileName())
             .append("jobParamSendControlFileName", getJobParamSendControlFileName())
             .append("jobParamReceiverControlFileName", getJobParamReceiverControlFileName())

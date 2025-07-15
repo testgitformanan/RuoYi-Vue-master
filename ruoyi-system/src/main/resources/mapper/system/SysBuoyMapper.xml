@@ -25,6 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="downPower"    column="down_power"    />
         <result property="upwardStandard"    column="upward_standard"    />
         <result property="downStandard"    column="down_standard"    />
+        <result property="uploadFileType"    column="upload_file_type"    />
+        <result property="isDestroy"    column="is_destroy"    />
         <result property="jobStatusFileName"    column="job_status_file_name"    />
         <result property="jobParamSendControlFileName"    column="job_param_send_control_file_name"    />
         <result property="jobParamReceiverControlFileName"    column="job_param_receiver_control_file_name"    />
@@ -40,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysBuoyVo">
-        select id, code, job_status, communication_frequency_job_status, modulation_type_job_status, communication_system_job_status, communication_frequency_job_param, modulation_type_job_param, gain_job_param, send_control, receiver_control, work_hours, buoy_type, communication_method, upward_frequency, down_frequency, upward_power, down_power, upward_standard, down_standard, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, type_status, buoy_start_or_stop, buoy_start_or_stop_status_back, buoy_status, remark, create_by, create_time, update_by, update_time from sys_buoy
+        select id, code, job_status, communication_frequency_job_status, modulation_type_job_status, communication_system_job_status, communication_frequency_job_param, modulation_type_job_param, gain_job_param, send_control, receiver_control, work_hours, buoy_type, communication_method, upward_frequency, down_frequency, upward_power, down_power, upward_standard, down_standard, upload_file_type, is_destroy, job_status_file_name, job_param_send_control_file_name, job_param_receiver_control_file_name, type_status, buoy_start_or_stop, buoy_start_or_stop_status_back, buoy_status, remark, create_by, create_time, update_by, update_time from sys_buoy
     </sql>
 
     <select id="selectSysBuoyList" parameterType="SysBuoy" resultMap="SysBuoyResult">
@@ -65,6 +67,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="downPower != null  and downPower != ''"> and down_power = #{downPower}</if>
             <if test="upwardStandard != null  and upwardStandard != ''"> and upward_standard = #{upwardStandard}</if>
             <if test="downStandard != null  and downStandard != ''"> and down_standard = #{downStandard}</if>
+            <if test="uploadFileType != null  and uploadFileType != ''"> and upload_file_type = #{uploadFileType}</if>
+            <if test="isDestroy != null  and isDestroy != ''"> and is_destroy = #{isDestroy}</if>
             <if test="jobStatusFileName != null  and jobStatusFileName != ''"> and job_status_file_name like concat('%', #{jobStatusFileName}, '%')</if>
             <if test="jobParamSendControlFileName != null  and jobParamSendControlFileName != ''"> and job_param_send_control_file_name like concat('%', #{jobParamSendControlFileName}, '%')</if>
             <if test="jobParamReceiverControlFileName != null  and jobParamReceiverControlFileName != ''"> and job_param_receiver_control_file_name like concat('%', #{jobParamReceiverControlFileName}, '%')</if>
@@ -102,6 +106,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="downPower != null">down_power,</if>
             <if test="upwardStandard != null">upward_standard,</if>
             <if test="downStandard != null">down_standard,</if>
+            <if test="uploadFileType != null">upload_file_type,</if>
+            <if test="isDestroy != null">is_destroy,</if>
             <if test="jobStatusFileName != null">job_status_file_name,</if>
             <if test="jobParamSendControlFileName != null">job_param_send_control_file_name,</if>
             <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name,</if>
@@ -135,6 +141,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="downPower != null">#{downPower},</if>
             <if test="upwardStandard != null">#{upwardStandard},</if>
             <if test="downStandard != null">#{downStandard},</if>
+            <if test="uploadFileType != null">#{uploadFileType},</if>
+            <if test="isDestroy != null">#{isDestroy},</if>
             <if test="jobStatusFileName != null">#{jobStatusFileName},</if>
             <if test="jobParamSendControlFileName != null">#{jobParamSendControlFileName},</if>
             <if test="jobParamReceiverControlFileName != null">#{jobParamReceiverControlFileName},</if>
@@ -172,6 +180,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="downPower != null">down_power = #{downPower},</if>
             <if test="upwardStandard != null">upward_standard = #{upwardStandard},</if>
             <if test="downStandard != null">down_standard = #{downStandard},</if>
+            <if test="uploadFileType != null">upload_file_type = #{uploadFileType},</if>
+            <if test="isDestroy != null">is_destroy = #{isDestroy},</if>
             <if test="jobStatusFileName != null">job_status_file_name = #{jobStatusFileName},</if>
             <if test="jobParamSendControlFileName != null">job_param_send_control_file_name = #{jobParamSendControlFileName},</if>
             <if test="jobParamReceiverControlFileName != null">job_param_receiver_control_file_name = #{jobParamReceiverControlFileName},</if>

@@ -729,6 +729,8 @@ upward_power       varchar(100)                               comment '上行功
 down_power       varchar(100)                               comment '下行功率',
 upward_standard       varchar(100)                               comment '上行制式',
 down_standard       varchar(100)                               comment '下行制式',
+upload_file_type       varchar(100)                               comment '上传文件类型1上传bin文件2上传wav文件0不设置',
+is_destroy       varchar(100)                               comment '模拟自毁 1是0否',
 job_status_file_name        varchar(500)                               comment '工作状态-文件名称',
 job_param_send_control_file_name        varchar(500)                               comment '工作参数-发送指令-文件名称',
 job_param_receiver_control_file_name        varchar(500)                               comment '工作参数-接收指令-文件名称',
