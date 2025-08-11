@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.wxgz;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.ruoyi.common.annotation.Anonymous;
@@ -59,15 +60,48 @@ public class WxgzGzcspzController extends BaseController {
      */
     @Log(title = "无线感知工作参数配置", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody WxgzGzcspz wxgzGzcspz) {
-        //向c发送数据，并将数据保存
-        int rows = wxgzGzcspzService.insertWxgzGzcspz(wxgzGzcspz);
+    public AjaxResult add(@RequestBody String wxgzGzcspz) {
+        logger.info("无线感知工作参数请求参数：{}", JSONUtil.toJsonStr(wxgzGzcspz));
+        JSONObject wxgzObj = JSONUtil.parseObj(wxgzGzcspz);
         JSONObject obj = JSONUtil.createObj();
-        obj.putOpt("id", wxgzGzcspz.getId());
-        obj.putOpt("hz", wxgzGzcspz.getHz());
-        obj.putOpt("speed", wxgzGzcspz.getSpeed());
-        obj.putOpt("height", wxgzGzcspz.getHeight());
-        obj.putOpt("mode", wxgzGzcspz.getMode());
+        obj.putOpt("storage_start", wxgzObj.get("storage_start"));
+        obj.putOpt("storage_stop", wxgzObj.get("storage_stop"));
+        obj.putOpt("storage_time", wxgzObj.get("storage_time"));
+        obj.putOpt("workMode", wxgzObj.get("workMode"));
+        obj.putOpt("rfMode", wxgzObj.get("rfMode"));
+        obj.putOpt("Manua", wxgzObj.get("Manua"));
+        obj.putOpt("AGCtime", wxgzObj.get("AGCtime"));
+        JSONObject freqObj = JSONUtil.createObj();
+        freqObj.putOpt("center", wxgzObj.get("center"));
+        freqObj.putOpt("bw", 400);
+        obj.putOpt("freq", freqObj);
+        JSONObject funcObj = JSONUtil.createObj();
+        funcObj.putOpt("switch", wxgzObj.get("switch"));
+        obj.putOpt("func", funcObj);
+        JSONObject specObj = JSONUtil.createObj();
+        specObj.putOpt("report", wxgzObj.get("report"));
+        specObj.putOpt("mode", wxgzObj.get("mode"));
+        specObj.putOpt("freqRes", wxgzObj.get("freqRes"));
+        specObj.putOpt("timeSmooth", wxgzObj.get("timeSmooth"));
+        specObj.putOpt("freqSmooth", wxgzObj.get("freqSmooth"));
+        obj.putOpt("spec", specObj);
+        JSONObject rfCtrlObj = JSONUtil.createObj();
+        rfCtrlObj.putOpt("txSw", wxgzObj.get("txSw"));
+        rfCtrlObj.putOpt("txAtt", wxgzObj.get("txAtt"));
+        rfCtrlObj.putOpt("rxFrq", wxgzObj.get("rxFrq"));
+        rfCtrlObj.putOpt("moFrq", wxgzObj.get("moFrq"));
+        rfCtrlObj.putOpt("txFrq", wxgzObj.get("txFrq"));
+        rfCtrlObj.putOpt("rxSel", wxgzObj.get("rxSel"));
+        rfCtrlObj.putOpt("antSw", wxgzObj.get("antSw"));
+        JSONArray rxAttArr = JSONUtil.createArray();
+        for (int i = 1; i < 8; i++) {
+            JSONObject rxAttObj = JSONUtil.createObj();
+            rxAttObj.putOpt("id", i);
+            rxAttObj.putOpt("att", wxgzObj.get("rxAtt"));
+            rxAttArr.add(rxAttObj);
+        }
+        rfCtrlObj.putOpt("rxAtt", rxAttArr);
+        obj.putOpt("rfCtrl", rfCtrlObj);
         String postJson = HttpUtils.sendPostJson(url + "/wxgz/gzcspz/yckzzl", obj.toString());
         // success!
         logger.info("工作参数配置C返回数据：{}", postJson);
@@ -99,7 +133,7 @@ public class WxgzGzcspzController extends BaseController {
                 }
             }
         }*/
-        return toAjax(rows);
+        return toAjax(1);
     }
 
     /**
@@ -110,10 +144,36 @@ public class WxgzGzcspzController extends BaseController {
     @PostMapping("/edit")
     public AjaxResult edit(@RequestBody String param) {
         logger.info("工作参数配置进来了:{}", param);
-        JSONObject obj = JSONUtil.parseObj(param);
+
+        JSONObject wxgzObj = JSONUtil.parseObj(param);
+        JSONObject obj = JSONUtil.createObj();
+        obj.putOpt("workMode", wxgzObj.get("workMode"));
+        obj.putOpt("rfMode", wxgzObj.get("rfMode"));
+        obj.putOpt("Manua", wxgzObj.get("Manua"));
+        obj.putOpt("AGCtime", wxgzObj.get("AGCtime"));
+        JSONObject freqObj = wxgzObj.getJSONObject("freq");
+        obj.putOpt("center", freqObj.get("center"));
+        obj.putOpt("bw", freqObj.get("bw"));
+        JSONObject funcObj = wxgzObj.getJSONObject("func");
+        obj.putOpt("switch", funcObj.get("switch"));
+        JSONObject specObj = wxgzObj.getJSONObject("spec");
+        obj.putOpt("report", specObj.get("report"));
+        obj.putOpt("mode", specObj.get("mode"));
+        obj.putOpt("freqRes", specObj.get("freqRes"));
+        obj.putOpt("timeSmooth", specObj.get("timeSmooth"));
+        obj.putOpt("freqSmooth", specObj.get("freqSmooth"));
+        JSONObject rfCtrlObj = wxgzObj.getJSONObject("rfCtrl");
+        obj.putOpt("txSw", rfCtrlObj.get("txSw"));
+        obj.putOpt("txAtt", rfCtrlObj.get("txAtt"));
+        obj.putOpt("rxFrq", rfCtrlObj.get("rxFrq"));
+        obj.putOpt("moFrq", rfCtrlObj.get("moFrq"));
+        obj.putOpt("txFrq", rfCtrlObj.get("txFrq"));
+        obj.putOpt("rxSel", rfCtrlObj.get("rxSel"));
+        obj.putOpt("antSw", rfCtrlObj.get("antSw"));
+        obj.putOpt("rxAtt", rfCtrlObj.getJSONArray("rxAtt").getJSONObject(0).get("att"));
+
         WxgzGzcspz gzcspz = new WxgzGzcspz();
-        gzcspz.setId(obj.getLong("id"));
-        gzcspz.setContent(obj.getStr("data"));
+        gzcspz.setContent(obj.toString());
         int rows = wxgzGzcspzService.updateWxgzGzcspz(gzcspz);
         logger.info("无线感知工作参数配置新增返回C：{}", rows);
         return toAjax(rows);

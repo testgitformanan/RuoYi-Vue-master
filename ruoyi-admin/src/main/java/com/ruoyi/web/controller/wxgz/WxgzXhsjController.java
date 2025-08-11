@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.wxgz;
 
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.annotation.Log;
@@ -50,8 +51,9 @@ public class WxgzXhsjController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody String param) {
         logger.info("信号数据进来了:{}", param);
+        JSONObject obj = JSONUtil.parseObj(param);
         WxgzXhsj wxgzXhsj = new WxgzXhsj();
-        wxgzXhsj.setContent(param);
+        wxgzXhsj.setContent(obj.getStr("values"));
         return toAjax(wxgzXhsjService.insertWxgzXhsj(wxgzXhsj));
     }
 

@@ -6,9 +6,9 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://8.130.150.81:3306/wtf?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-        username: wtf
-        password: 3YjK5rSjAShK6K8z
+        url: jdbc:mysql://127.0.0.1:3306/wtf?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+        username: root
+        password: sjm123456
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭

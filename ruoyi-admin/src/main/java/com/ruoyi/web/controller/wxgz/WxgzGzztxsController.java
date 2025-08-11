@@ -37,10 +37,10 @@ public class WxgzGzztxsController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(WxgzGzztxs wxgzGzztxs) {
         logger.info("前端状态显示请求：{}", JSONUtil.toJsonStr(wxgzGzztxs));
-        if (wxgzGzztxs.getParams() == null || wxgzGzztxs.getParams().isEmpty()) {
+        /*if (wxgzGzztxs.getParams() == null || wxgzGzztxs.getParams().isEmpty()) {
             logger.info("不分页");
             return getDataTable(wxgzGzztxsService.selectWxgzGzztxsList(wxgzGzztxs));
-        }
+        }*/
         startPage();
         logger.info("分页");
         List<WxgzGzztxs> list = wxgzGzztxsService.selectWxgzGzztxsList(wxgzGzztxs);
