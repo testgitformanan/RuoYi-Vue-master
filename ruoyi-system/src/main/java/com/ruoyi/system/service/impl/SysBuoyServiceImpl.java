@@ -526,6 +526,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String downPower = jsonObject.get("workHours")==null?null:(String)jsonObject.get("downPower");
         String upwardStandard = jsonObject.get("upwardStandard")==null?null:(String)jsonObject.get("upwardStandard");
         String downStandard = jsonObject.get("downStandard")==null?null:(String)jsonObject.get("downStandard");
+        String remark = jsonObject.get("remark")==null?null:(String)jsonObject.get("remark");
         sysBuoy.setCommunicationFrequencyJobStatus(communicationFrequencyJobStatus);
         sysBuoy.setModulationTypeJobStatus(modulationTypeJobStatus);
         sysBuoy.setCommunicationSystemJobStatus(communicationSystemJobStatus);
@@ -549,6 +550,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         sysBuoy.setDownPower(downPower);
         sysBuoy.setUpwardStandard(upwardStandard);
         sysBuoy.setDownStandard(downStandard);
+        sysBuoy.setRemark(remark);
         if(sysBuoyList == null || sysBuoyList.isEmpty()){
 //            sysBuoy.setId(userId);
             sysBuoyMapper.insertSysBuoy(sysBuoy);
@@ -597,6 +599,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String machineStartOrStop = jsonObject.get("machineStartOrStop")==null?null:(String)jsonObject.get("machineStartOrStop");
         String machineStartOrStopStatusBack = jsonObject.get("machineStartOrStopStatusBack")==null?null:(String)jsonObject.get("machineStartOrStopStatusBack");
         String machineStatus = jsonObject.get("machineStatus")==null?null:(String)jsonObject.get("machineStatus");
+        String remark = jsonObject.get("remark")==null?null:(String)jsonObject.get("remark");
         sysBuoyMachine.setPort(port);
         sysBuoyMachine.setBaudRate(baudRate);
         sysBuoyMachine.setReceiverGainJobStatus(receiverGainJobStatus);
@@ -614,6 +617,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         sysBuoyMachine.setMachineStartOrStop(machineStartOrStop);
         sysBuoyMachine.setMachineStartOrStopStatusBack(machineStartOrStopStatusBack);
         sysBuoyMachine.setMachineStatus(machineStatus);
+        sysBuoyMachine.setRemark(remark);
         if(selectSysBuoyMachineList == null || selectSysBuoyMachineList.isEmpty()){
 //            sysBuoyMachine.setId(userId);
             sysBuoyMachineMapper.insertSysBuoyMachine(sysBuoyMachine);
@@ -648,6 +652,7 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         String azimuthAngle = jsonObject.get("azimuthAngle")==null?null:(String)jsonObject.get("azimuthAngle");
         String pitchAngle = jsonObject.get("pitchAngle")==null?null:(String)jsonObject.get("pitchAngle");
         String typeStatus = jsonObject.get("typeStatus")==null?"0":(String)jsonObject.get("typeStatus");
+        String remark = jsonObject.get("remark")==null?"0":(String)jsonObject.get("remark");
         sysBuoyRadioSensing.setCode(code);
         sysBuoyRadioSensing.setAzimuthAngle(azimuthAngle);
         sysBuoyRadioSensing.setPitchAngle(pitchAngle);
@@ -656,6 +661,8 @@ public class SysBuoyServiceImpl implements ISysBuoyService
         sysBuoyRadioSensing.setModulationType(modulationType);
         sysBuoyRadioSensing.setTypeStatus(Long.valueOf(typeStatus));
         sysBuoyRadioSensing.setJobStatus(jobStatus);
+        sysBuoyRadioSensing.setRemark(remark);
+
 
 //        if(sysBuoyMachine == null){
 //            sysBuoyMachine.setId(userId);
