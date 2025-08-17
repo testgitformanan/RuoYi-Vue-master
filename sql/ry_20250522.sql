@@ -789,7 +789,7 @@ receiver_control       varchar(1000)                               comment '接�
 job_status_file_name        varchar(500)                               comment '工作状态-文件名称',
 job_param_send_control_file_name        varchar(500)                               comment '工作参数-发送指令-文件名称',
 job_param_receiver_control_file_name        varchar(500)                               comment '工作参数-接收指令-文件名称',
-type_status  int  comment '工作状态为0工作参数为',
+type_status  int  comment '工作状态为0工作参数为1通信連接2',
 machine_start_or_stop  varchar(100) comment '水声通信机启动关闭连接状态传递给c端 启动连接：1   停止连接：0  链接中：2',
 machine_start_or_stop_status_back  varchar(100) comment '水声通信机启动关闭连接状态 已启动：1  未启动：0',
 machine_status  varchar(100) comment '水声通信机工作状态 运行中：1  待机中：0 ',

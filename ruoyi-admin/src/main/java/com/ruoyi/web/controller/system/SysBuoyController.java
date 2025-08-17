@@ -175,12 +175,12 @@ public class SysBuoyController extends BaseController
         List<SysBuoyMachine> sysBuoyMachines0 = buoyMachineService.selectSysBuoyMachineList(buoyMachine0);
         objectObjectHashMap.put("sstxjgzzt", sysBuoyMachines0);
         SysBuoyMachine buoyMachine1 = new SysBuoyMachine();
-        buoyMachine0.setTypeStatus(1L);
+        buoyMachine1.setTypeStatus(1L);
         startOrderBy();
         List<SysBuoyMachine> sysBuoyMachines1 = buoyMachineService.selectSysBuoyMachineList(buoyMachine1);
         objectObjectHashMap.put("sstxjgzcs", sysBuoyMachines1);
         SysBuoyMachine buoyMachine2 = new SysBuoyMachine();
-        buoyMachine0.setTypeStatus(2L);
+        buoyMachine2.setTypeStatus(2L);
         startOrderBy();
         List<SysBuoyMachine> sysBuoyMachines2 = buoyMachineService.selectSysBuoyMachineList(buoyMachine2);
         objectObjectHashMap.put("sstxjtxlj", sysBuoyMachines2);
